@@ -9,7 +9,7 @@ document.body.appendChild( renderer.domElement );
 var fLoader = new THREE.FontLoader()
 var text;
 fLoader.load(
-	"../fonts/helvetiker_regular.typeface.json",
+	"fonts/helvetiker_regular.typeface.json",
 	function(font) {
 		var geometry = new THREE.TextGeometry( "Ivo", {size: 5, font: font, height: 2.5} );
 		var material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
