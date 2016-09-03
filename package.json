@@ -1,0 +1,13 @@
+{
+  "name": "autobivo",
+  "version": "1.0.0",
+  "description": "Personal site for Ivo Murrell",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ivo Murrell",
+  "license": "ISC"
+}
