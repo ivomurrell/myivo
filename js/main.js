@@ -20,7 +20,7 @@ fLoader.load(
 )
 
 camera.position.y = 2;
-camera.position.z = 10;
+camera.position.z = 11;
 
 function render() {
 	requestAnimationFrame( render );
