@@ -7,7 +7,7 @@ renderer.setSize( window.innerWidth, window.innerWidth * 9 / 16 );
 renderer.setClearColor( 0xffffff );
 document.body.appendChild( renderer.domElement );
 
-var fLoader = new THREE.FontLoader()
+var fLoader = new THREE.FontLoader();
 var text;
 fLoader.load(
 	"fonts/helvetiker_regular.typeface.json",
@@ -17,7 +17,7 @@ fLoader.load(
 		text = new THREE.Mesh( geometry, material );
 		scene.add( text );
 	}
-)
+);
 
 camera.position.y = 2;
 camera.position.z = 11;
