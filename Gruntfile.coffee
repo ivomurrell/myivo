@@ -12,6 +12,8 @@ module.exports = (grunt) ->
     uglify:
       options:
         sourceMap: true
+        sourceMapIn: (src) ->
+          src + '.map'
       files:
         expand: true
         cwd: "js/"
