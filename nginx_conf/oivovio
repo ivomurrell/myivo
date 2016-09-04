@@ -1,0 +1,19 @@
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+	root /var/www/html;
+
+	index index.html;
+
+	server_name _;
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+
+	location /thedevzone/ {
+		auth_basic "Dev area, stay out!";
+		auth_basic_user_file conf/htpasswd;
+	}
+}
