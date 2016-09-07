@@ -49,6 +49,14 @@ module.exports = (grunt) ->
       sass:
         files: ['sass/**/*.scss']
         tasks: ['newer:sass','newer:postcss']
+      livereload:
+        options:
+          livereload:true
+        files: [
+          'build/**/*.js'
+          'styles/**/*.css'
+          '*.html'
+        ]
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
