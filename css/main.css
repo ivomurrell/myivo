@@ -1,0 +1,22 @@
+.title {
+	bottom: 0;
+	font-family: -apple-system, Helvetica, Arial, sans-serif;
+	font-size: 6vh;
+	font-weight: bold;
+	margin-bottom: 0.35em;
+	margin-left: 3%;
+	position: absolute;
+}
+
+.headerContainer {
+	box-shadow: 0 2.4vh 1.2vh -2vh grey;
+	height: 10vh;
+	position: relative;
+}
+
+.logoGL {
+	float: right;
+	height: 100%;
+	width: 25vh;
+}
+

@@ -1,11 +1,10 @@
 scene = new THREE.Scene()
-camera = new THREE.PerspectiveCamera 75, 16 / 9, 0.1, 1000
+camera = new THREE.PerspectiveCamera 40, 25 / 10, 0.1, 1000
 camera.zoom = 0.05
 
-renderer = new THREE.WebGLRenderer()
-renderer.setSize window.innerWidth, window.innerWidth * 9 / 16
+canvas = document.getElementById "spinningCanvas"
+renderer = new THREE.WebGLRenderer {canvas: canvas}
 renderer.setClearColor 0xffffff
-document.body.appendChild renderer.domElement
 
 fLoader = new THREE.FontLoader()
 text = null
@@ -18,8 +17,8 @@ fLoader.load(
     scene.add text
 )
 
-camera.position.y = 2
-camera.position.z = 11
+camera.position.y = 1.9
+camera.position.z = 15
 
 render = () ->
   requestAnimationFrame render
