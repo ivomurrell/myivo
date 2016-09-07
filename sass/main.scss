@@ -1,3 +1,11 @@
+$min-header-height: 50px;
+
+@mixin header-break {
+	@media screen and (max-height: $min-header-height * 10) {
+		@content
+	}
+}
+
 .title {
 	bottom: 0;
 	font: {
@@ -10,33 +18,31 @@
 		left: 3%;
 	}
 	position: absolute;
+
+	@include header-break {
+		font-size: $min-header-height * (6 / 10);
+	}
 }
 
 $header-viewport-proportion: 10vh;
-$min-header-height: 50px;
-$container-shadow-colour: #808080;
 
 .header-container {
+	$container-shadow-colour: #808080;
+
 	box-shadow: 0 2.4vh 1.2vh -2vh $container-shadow-colour;
 	height: $header-viewport-proportion;
 	min-height: $min-header-height;
 	position: relative;
 }
 
-$logo-aspect-ratio: 25 / 10;
-
 .logo-gl {
+	$logo-aspect-ratio: 25 / 10;
+
 	float: right;
 	height: 100%;
 	width: $header-viewport-proportion * $logo-aspect-ratio;
-}
 
-@media screen and (max-height: $min-header-height * 10) {
-	.title {
-		font-size: $min-header-height * (6 / 10);
-	}
-
-	.logo-gl {
+	@include header-break {
 		width: $min-header-height * $logo-aspect-ratio;
 	}
 }
