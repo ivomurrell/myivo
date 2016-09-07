@@ -20,8 +20,16 @@ module.exports = (grunt) ->
         src: ['**/*.js']
         dest: 'build/'
         ext: '.min.js'
+    watch:
+      coffee:
+        files: ['coffee/**/*.coffee']
+        tasks: ['coffee']
+      uglify:
+        files: ['js/**/*.js']
+        tasks: ['uglify']
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
+  grunt.loadNpmTasks 'grunt-contrib-watch'
 
   grunt.registerTask 'default', ['coffee', 'uglify']
