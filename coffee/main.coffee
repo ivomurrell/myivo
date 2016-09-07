@@ -3,7 +3,7 @@ camera = new THREE.PerspectiveCamera 40, 25 / 10, 0.1, 1000
 camera.zoom = 0.05
 
 canvas = document.getElementById "spinningCanvas"
-renderer = new THREE.WebGLRenderer {canvas: canvas}
+renderer = new THREE.WebGLRenderer {canvas: canvas, antialias: true}
 renderer.setClearColor 0xffffff
 
 fLoader = new THREE.FontLoader()
