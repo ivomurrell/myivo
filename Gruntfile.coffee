@@ -27,8 +27,21 @@ module.exports = (grunt) ->
         expand: true
         cwd: "sass/"
         src: ['**/*.scss']
-        dest: 'styles/'
+        dest: 'css/'
         ext: '.css'
+    postcss:
+      options:
+        map: true
+        processors: [
+          require('autoprefixer')(browsers: 'last 2 versions')
+          require('cssnano')()
+        ]
+      files:
+        expand: true
+        cwd: "css/"
+        src: ['**/*.css']
+        dest: 'styles/'
+        ext: '.min.css'
     watch:
       coffee:
         files: ['coffee/**/*.coffee']
@@ -43,6 +56,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-sass'
+  grunt.loadNpmTasks 'grunt-postcss'
   grunt.loadNpmTasks 'grunt-contrib-watch'
 
-  grunt.registerTask 'default', ['coffee', 'uglify', 'sass']
+  grunt.registerTask 'default', ['coffee', 'uglify', 'sass', 'postcss']
