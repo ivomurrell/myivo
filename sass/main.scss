@@ -8,15 +8,30 @@
 	position: absolute;
 }
 
+$headerViewportProportion: 10vh;
+$minHeaderHeight: 50px;
+
 .headerContainer {
 	box-shadow: 0 2.4vh 1.2vh -2vh grey;
-	height: 10vh;
+	height: $headerViewportProportion;
+	min-height: $minHeaderHeight;
 	position: relative;
 }
+
+$logoAspectRatio: 25 / 10;
 
 .logoGL {
 	float: right;
 	height: 100%;
-	width: 25vh;
+	width: $headerViewportProportion * $logoAspectRatio;
 }
 
+@media screen and (max-height: $minHeaderHeight * 10) {
+	.title {
+		font-size: $minHeaderHeight * (6 / 10);
+	}
+
+	.logoGL {
+		width: $minHeaderHeight * $logoAspectRatio;
+	}
+}
