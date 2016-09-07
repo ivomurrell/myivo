@@ -45,15 +45,16 @@ module.exports = (grunt) ->
     watch:
       coffee:
         files: ['coffee/**/*.coffee']
-        tasks: ['coffee','uglify']
+        tasks: ['newer:coffee','newer:uglify']
       sass:
         files: ['sass/**/*.scss']
-        tasks: ['sass','postcss']
+        tasks: ['newer:sass','newer:postcss']
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-sass'
   grunt.loadNpmTasks 'grunt-postcss'
   grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-newer'
 
   grunt.registerTask 'default', ['coffee', 'uglify', 'sass', 'postcss']
