@@ -3,35 +3,36 @@
 	font-family: -apple-system, Helvetica, Arial, sans-serif;
 	font-size: 6vh;
 	font-weight: bold;
-	margin-bottom: 0.35em;
+	margin-bottom: .35em;
 	margin-left: 3%;
 	position: absolute;
 }
 
-$headerViewportProportion: 10vh;
-$minHeaderHeight: 50px;
+$header-viewport-proportion: 10vh;
+$min-header-height: 50px;
+$container-shadow-colour: #808080;
 
-.headerContainer {
-	box-shadow: 0 2.4vh 1.2vh -2vh grey;
-	height: $headerViewportProportion;
-	min-height: $minHeaderHeight;
+.header-container {
+	box-shadow: 0 2.4vh 1.2vh -2vh $container-shadow-colour;
+	height: $header-viewport-proportion;
+	min-height: $min-header-height;
 	position: relative;
 }
 
-$logoAspectRatio: 25 / 10;
+$logo-aspect-ratio: 25 / 10;
 
-.logoGL {
+.logo-gl {
 	float: right;
 	height: 100%;
-	width: $headerViewportProportion * $logoAspectRatio;
+	width: $header-viewport-proportion * $logo-aspect-ratio;
 }
 
-@media screen and (max-height: $minHeaderHeight * 10) {
+@media screen and (max-height: $min-header-height * 10) {
 	.title {
-		font-size: $minHeaderHeight * (6 / 10);
+		font-size: $min-header-height * (6 / 10);
 	}
 
-	.logoGL {
-		width: $minHeaderHeight * $logoAspectRatio;
+	.logo-gl {
+		width: $min-header-height * $logo-aspect-ratio;
 	}
 }
