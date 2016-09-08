@@ -26,9 +26,15 @@ server {
 		try_files $uri $uri/ =404;
 	}
 
-	location /thedevzone/ {
+	location /thedevzone {
 		auth_basic "Dev area, stay out!";
-		auth_basic_user_file conf/htpasswd;
+		auth_basic_user_file /etc/nginx/.htpasswd;
+
+		alias /var/www/html/dev;
+	}
+
+	location /dev {
+		deny all;
 	}
 
 	location ~ /.well-known {
