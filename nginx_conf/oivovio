@@ -6,7 +6,7 @@ server {
 
 	index index.html;
 
-	server_name _;
+	server_name oivov.io;
 
 	location / {
 		try_files $uri $uri/ =404;
@@ -16,4 +16,10 @@ server {
 		auth_basic "Dev area, stay out!";
 		auth_basic_user_file conf/htpasswd;
 	}
+}
+
+server {
+    server_name www.oivov.io;
+    
+    return 301 $scheme://oivov.io$request_uri;
 }
