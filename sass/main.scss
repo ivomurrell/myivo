@@ -1,7 +1,14 @@
 $min-header-height: 50px;
 
-@mixin header-break {
+@mixin header-height-break {
 	@media screen and (max-height: $min-header-height * 10) {
+		@content
+	}
+}
+
+@mixin header-width-break {
+	// iPhone 5S aspect ratio is roughly where we want to cut off.
+	@media screen and (max-aspect-ratio: 40/71) {
 		@content
 	}
 }
@@ -19,8 +26,12 @@ $min-header-height: 50px;
 	}
 	position: absolute;
 
-	@include header-break {
+	@include header-height-break {
 		font-size: $min-header-height * (6 / 10);
+	}
+
+	@include header-width-break {
+		display: none;
 	}
 }
 
@@ -42,7 +53,15 @@ $header-viewport-proportion: 10vh;
 	height: 100%;
 	width: $header-viewport-proportion * $logo-aspect-ratio;
 
-	@include header-break {
+	@include header-height-break {
 		width: $min-header-height * $logo-aspect-ratio;
+	}
+
+	@include header-width-break {
+		float: none;
+		left: 0;
+		margin: auto;
+		position: absolute;
+		right: 0;
 	}
 }
