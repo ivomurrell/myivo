@@ -57,6 +57,12 @@ module.exports = (grunt) ->
           'styles/**/*.css'
           '*.html'
         ]
+    newer:
+      options:
+        override: (detail, include) ->
+          if detail.task is 'sass' and detail.path is 'sass/main.scss'
+            include true
+          
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
