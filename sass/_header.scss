@@ -7,24 +7,21 @@ $min-header-height: 50px;
 }
 
 @mixin header-width-break {
-	// iPhone 5S aspect ratio is roughly where we want to cut off.
-	@media screen and (max-aspect-ratio: 40/71) {
+	// Arbitrary value found via experimentation.
+	@media screen and (max-aspect-ratio: 13/20) {
 		@content
 	}
 }
 
 .title {
-	bottom: 0;
+	flex: 1;
 	font: {
 		family: -apple-system, Helvetica, Arial, sans-serif;
 		size: 6vh;
 		weight: bold;
 	}
-	margin: {
-		bottom: .35em;
-		left: 3%;
-	}
-	position: absolute;
+	margin: auto;
+	padding-left: 3%;
 
 	@include header-height-break {
 		font-size: $min-header-height * (6 / 10);
@@ -40,8 +37,11 @@ $header-viewport-proportion: 10vh;
 .header-container {
 	$container-shadow-colour: #808080;
 
+	align-items: center;
 	box-shadow: 0 2.4vh 1.2vh -2vh $container-shadow-colour;
+	display: flex;
 	height: $header-viewport-proportion;
+	justify-content: space-between;
 	min-height: $min-header-height;
 	position: relative;
 }
@@ -49,8 +49,10 @@ $header-viewport-proportion: 10vh;
 .logo-gl {
 	$logo-aspect-ratio: 25 / 10;
 
-	float: right;
+	flex: 1 0 content;
 	height: 100%;
+	margin: auto;
+	padding-right: 3%;
 	width: $header-viewport-proportion * $logo-aspect-ratio;
 
 	@include header-height-break {
@@ -58,10 +60,6 @@ $header-viewport-proportion: 10vh;
 	}
 
 	@include header-width-break {
-		float: none;
-		left: 0;
-		margin: auto;
-		position: absolute;
-		right: 0;
+		padding: auto;
 	}
 }
