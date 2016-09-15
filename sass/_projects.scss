@@ -1,0 +1,37 @@
+.project-container {
+	align-items: center;
+	display: flex;
+	height: 38vh;
+	$margin-strength: 5%;
+	margin: {
+		bottom: 2%;
+		left: $margin-strength;
+		right: $margin-strength;
+	}
+}
+
+@each $alignment in left, right {
+	.project-desc-#{$alignment} {
+		margin-#{$alignment}: 2%;
+		$padding-strength: 4%;
+		@if $alignment == left {
+			padding-right: $padding-strength;
+		} @else {
+			padding-left: $padding-strength;
+		}
+		text-align: $alignment;
+	}
+}
+
+.project-title {
+	display: block;
+	font-size: 3em;
+	margin: auto;
+}
+
+.project-thumbnail {
+	flex: 1 0 auto;
+	height: inherit;
+	margin: auto;
+	object-fit: contain;
+}
