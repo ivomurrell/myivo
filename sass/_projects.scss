@@ -1,13 +1,13 @@
 %project-container {
 	align-items: center;
 	display: flex;
-	height: 38vh;
-	$margin-strength: 5%;
+	$margin-strength: auto;
 	margin: {
-		bottom: 2%;
+		bottom: 6vh;
 		left: $margin-strength;
 		right: $margin-strength;
 	}
+	width: 1000px;
 }
 
 @each $alignment in left, right {
@@ -43,4 +43,5 @@
 	height: inherit;
 	margin: auto;
 	object-fit: contain;
+	width: 60%;
 }
