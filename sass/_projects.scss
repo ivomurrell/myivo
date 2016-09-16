@@ -1,4 +1,4 @@
-.project-container {
+%project-container {
 	align-items: center;
 	display: flex;
 	height: 38vh;
@@ -11,6 +11,15 @@
 }
 
 @each $alignment in left, right {
+	.project-container-#{$alignment} {
+		@extend %project-container;
+		@if $alignment == left {
+			flex-direction: row-reverse;
+		} @else {
+			flex-direction: row;
+		}
+	}
+
 	.project-desc-#{$alignment} {
 		margin-#{$alignment}: 2%;
 		$padding-strength: 4%;
