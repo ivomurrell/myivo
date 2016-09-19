@@ -12,14 +12,9 @@ module.exports = (grunt) ->
     uglify:
       options:
         sourceMap: true
-        sourceMapIn: (src) ->
-          src + '.map'
-      files:
-        expand: true
-        cwd: "js/"
-        src: ['**/*.js']
-        dest: 'build/'
-        ext: '.min.js'
+      all:
+        src: ['js/**/*.js']
+        dest: 'build/app.min.js'
     sass:
       options:
         sourceMap: true
@@ -36,12 +31,9 @@ module.exports = (grunt) ->
           require('autoprefixer')(browsers: 'last 2 versions')
           require('cssnano')()
         ]
-      files:
-        expand: true
-        cwd: "css/"
-        src: ['**/*.css']
-        dest: 'styles/'
-        ext: '.min.css'
+      all:
+        src: ['css/**/*.css']
+        dest: 'styles/main.min.css'
     processhtml:
       options:
         strip: true
@@ -51,10 +43,10 @@ module.exports = (grunt) ->
     watch:
       coffee:
         files: ['coffee/**/*.coffee']
-        tasks: ['newer:coffee','newer:uglify']
+        tasks: ['newer:coffee','newer:uglify:all']
       sass:
         files: ['sass/**/*.scss']
-        tasks: ['newer:sass','newer:postcss']
+        tasks: ['newer:sass','newer:postcss:all']
       livereload:
         options:
           livereload:true
