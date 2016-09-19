@@ -7,7 +7,7 @@
 		left: $margin-strength;
 		right: $margin-strength;
 	}
-	width: 1000px;
+	max-width: 1000px;
 }
 
 @each $alignment in left, right {
