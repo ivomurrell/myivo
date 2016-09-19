@@ -25,22 +25,14 @@ $animation-padding: 100% / 1200 * 100;
 	@keyframes project-fade-in-#{$alignment} {
 		0% {
 			opacity: 0;
-			padding-#{$alignment}: 0%;
-			@if $alignment == left {
-				padding-right: $animation-padding * 2;
-			} @else {
-				padding-left: $animation-padding * 2;
-			}
+			$animation-translation: $animation-padding;
+			@if $alignment == left {$animation-translation: $animation-translation * -1;};
+			transform: translateX($animation-translation);
 		}
 
 		100% {
 			opacity: 100%;
-			padding-#{$alignment}: $animation-padding;
-			@if $alignment == left {
-				padding-right: $animation-padding;
-			} @else {
-				padding-left: $animation-padding;
-			}
+			transform: 0;
 		}
 	}
 
