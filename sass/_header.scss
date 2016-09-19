@@ -6,13 +6,6 @@ $min-header-height: 50px;
 	}
 }
 
-@mixin header-width-break {
-	// Arbitrary value found via experimentation.
-	@media screen and (max-aspect-ratio: 13/20) {
-		@content
-	}
-}
-
 .title {
 	flex: 1;
 	font: {
@@ -20,14 +13,12 @@ $min-header-height: 50px;
 		weight: bold;
 	}
 	margin: auto;
+	overflow: hidden;
 	padding-left: 3%;
+	white-space: nowrap;
 
 	@include header-height-break {
 		font-size: $min-header-height * (6 / 10);
-	}
-
-	@include header-width-break {
-		display: none;
 	}
 }
 
@@ -56,9 +47,5 @@ $header-viewport-proportion: 10vh;
 
 	@include header-height-break {
 		width: $min-header-height * $logo-aspect-ratio;
-	}
-
-	@include header-width-break {
-		padding: auto;
 	}
 }
