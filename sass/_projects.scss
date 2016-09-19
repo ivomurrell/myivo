@@ -38,7 +38,7 @@ $animation-padding: 100% / 1200 * 100;
 
 	.project-container-#{$alignment} {
 		@extend %project-container;
-		animation: project-fade-in-#{$alignment} 2s ease;
+		animation: project-fade-in-#{$alignment} 2s .1s backwards ease;
 		@if $alignment == left {
 			flex-direction: row-reverse;
 		} @else {
