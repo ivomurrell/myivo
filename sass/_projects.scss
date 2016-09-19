@@ -1,3 +1,5 @@
+$animation-padding: 100% / 1200 * 100;
+
 %project-container {
 	align-items: center;
 	display: flex;
@@ -7,12 +9,29 @@
 		left: $margin-strength;
 		right: $margin-strength;
 	}
-	max-width: 1000px;
+	padding: {
+		left: $animation-padding;
+		right: $animation-padding;
+	}
+	width: 1000px;
 }
 
 @each $alignment in left, right {
+	@keyframes project-fade-in-#{$alignment} {
+		0% {
+			opacity: 0;
+			padding-#{$alignment}: 0%;
+		}
+
+		100% {
+			opacity: 100%;
+			padding-#{$alignment}: $animation-padding;
+		}
+	}
+
 	.project-container-#{$alignment} {
 		@extend %project-container;
+		animation: project-fade-in-#{$alignment} 2s ease;
 		@if $alignment == left {
 			flex-direction: row-reverse;
 		} @else {
