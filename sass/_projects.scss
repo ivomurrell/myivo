@@ -1,5 +1,11 @@
 $animation-padding: 100% / 1200 * 100;
 
+@mixin project-width-break {
+	@media screen and (max-width: 1200px) {
+		@content
+	}
+}
+
 %project-container {
 	align-items: center;
 	display: flex;
@@ -15,7 +21,7 @@ $animation-padding: 100% / 1200 * 100;
 	}
 	width: 1000px;
 
-	@media screen and (max-width: 1200px) {
+	@include project-width-break {
 		flex-wrap: wrap-reverse;
 		width: auto;
 	}
@@ -70,4 +76,8 @@ $animation-padding: 100% / 1200 * 100;
 	margin: auto;
 	object-fit: contain;
 	width: 60%;
+
+	@include project-width-break {
+		margin-bottom: 12px;
+	}
 }
