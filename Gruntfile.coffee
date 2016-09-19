@@ -43,10 +43,10 @@ module.exports = (grunt) ->
     watch:
       coffee:
         files: ['coffee/**/*.coffee']
-        tasks: ['newer:coffee','newer:uglify:all']
+        tasks: ['coffee','uglify:all']
       sass:
         files: ['sass/**/*.scss']
-        tasks: ['newer:sass','newer:postcss:all']
+        tasks: ['sass','postcss:all']
       livereload:
         options:
           livereload:true
@@ -55,11 +55,6 @@ module.exports = (grunt) ->
           'styles/**/*.css'
           '*.html'
         ]
-    newer:
-      options:
-        override: (detail, include) ->
-          if detail.task is 'sass' and detail.path is 'sass/main.scss'
-            include true
     clean:
       dist:
         ['dist/*']
@@ -82,7 +77,6 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-postcss'
   grunt.loadNpmTasks 'grunt-processhtml'
   grunt.loadNpmTasks 'grunt-contrib-watch'
-  grunt.loadNpmTasks 'grunt-newer'
   grunt.loadNpmTasks 'grunt-contrib-clean'
   grunt.loadNpmTasks 'grunt-contrib-copy'
 
