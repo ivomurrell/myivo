@@ -14,6 +14,11 @@ $animation-padding: 100% / 1200 * 100;
 		right: $animation-padding;
 	}
 	width: 1000px;
+
+	@media screen and (max-width: 1200px) {
+		flex-wrap: wrap-reverse;
+		width: auto;
+	}
 }
 
 @each $alignment in left, right {
@@ -21,11 +26,21 @@ $animation-padding: 100% / 1200 * 100;
 		0% {
 			opacity: 0;
 			padding-#{$alignment}: 0%;
+			@if $alignment == left {
+				padding-right: $animation-padding * 2;
+			} @else {
+				padding-left: $animation-padding * 2;
+			}
 		}
 
 		100% {
 			opacity: 100%;
 			padding-#{$alignment}: $animation-padding;
+			@if $alignment == left {
+				padding-right: $animation-padding;
+			} @else {
+				padding-left: $animation-padding;
+			}
 		}
 	}
 
