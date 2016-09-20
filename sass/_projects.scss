@@ -15,11 +15,11 @@ $animation-padding: 100% / 1200 * 100;
 		left: $margin-strength;
 		right: $margin-strength;
 	}
+	max-width: 1000px;
 	padding: {
 		left: $animation-padding;
 		right: $animation-padding;
 	}
-	max-width: 1000px;
 
 	@include project-width-break {
 		flex-wrap: wrap-reverse;
