@@ -1,0 +1,23 @@
+$bar-height: 32px;
+
+.scrobble-bar {
+	$bar-background: #e4e4e4;
+	background: $bar-background;
+	bottom: 0;
+	height: $bar-height;
+	opacity: .95;
+	position: fixed;
+	width: 100%;
+}
+
+.bar-container {
+	display: flex;
+	height: $bar-height;
+	justify-content: flex-start;
+}
+
+.bar-text {
+	font-style: italic;
+	margin: auto;
+	margin-left: 14px;
+}
