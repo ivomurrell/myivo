@@ -1,6 +1,6 @@
 $ ->
   pollNowListening = () ->
-    $.getJSON "http://localhost:8345/scrobbles", (data) ->
+    $.getJSON "http://localhost:8345/scrobbles.json", (data) ->
       textElement = $("#scrobblar-text")
       title = data.recenttracks.track[0].name
       if not textElement?
