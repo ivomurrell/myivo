@@ -16,7 +16,20 @@ $bar-height: 32px;
 	justify-content: flex-start;
 }
 
+@keyframes scrobblar-fade-in {
+	0% {
+		opacity: 0;
+		transform: translateX(-9px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: 0;
+	}
+}
+
 .bar-text {
+	animation: scrobblar-fade-in .4s .1s backwards ease-in;
 	font-style: italic;
 	margin: auto;
 	margin-left: 14px;
