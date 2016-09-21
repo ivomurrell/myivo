@@ -1,15 +1,16 @@
 $ ->
   pollNowListening = () ->
-    $.get "http://localhost:8345/scrobbles", (data) ->
+    $.getJSON "http://localhost:8345/scrobbles", (data) ->
       textElement = $("#scrobblar-text")
+      title = data.recenttracks.track[0].name
       if not textElement?
         $(".bar-container").append(
-          "<p class='bar-text' id='scrobblar-text'>#{data}</p>"
+          "<p class='bar-text' id='scrobblar-text'>#{title}</p>"
         )
-      else if data isnt textElement.text()
+      else if title isnt textElement.text()
         textClone = textElement.clone true
         textElement.remove()
-        textClone.text data
+        textClone.text title
         $(".bar-container").append textClone
       setTimeout pollNowListening, 10000
 
