@@ -18,6 +18,21 @@ $ ->
         textElement.remove()
         textClone.text text
         $(".bar-container").append textClone
+
+      art = data.recenttracks.track[0].image[0]['#text']
+
+      coverElement = $("#scrobblar-art")
+      if not coverElement.length
+        $(".bar-container").append(
+          "<img class='bar-cover' id='scrobblar-art'
+            src='#{art}' alt='Cover art'></img>"
+        )
+      else if art isnt coverElement.attr "src"
+        coverClone = coverElement.clone true
+        coverElement.remove()
+        coverClone.attr "src", art
+        $(".bar-container").append coverClone
+
       setTimeout pollNowListening, 10000
 
   pollNowListening()
