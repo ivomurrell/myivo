@@ -9,7 +9,7 @@ $ ->
       text = "#{prefix}: #{text}"
 
       textElement = $("#scrobblar-text")
-      if not textElement?
+      if not textElement.length
         $(".bar-container").append(
           "<p class='bar-text' id='scrobblar-text'>#{text}</p>"
         )
