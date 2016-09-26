@@ -1,6 +1,6 @@
 $ ->
   pollNowListening = () ->
-    $.getJSON "http://localhost:8345/scrobbles.json", (data) ->
+    $.getJSON "https://oivov.io/scrobbles.json", (data) ->
       title = data.recenttracks.track[0].name
       artist = data.recenttracks.track[0].artist['#text']
       text = "#{title} - #{artist}"
