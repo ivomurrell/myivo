@@ -40,6 +40,10 @@ server {
 	location ~ /.well-known {
 		allow all;
 	}
+
+	location /scrobbles.json {
+		proxy_pass https://localhost:8345;
+	}
 }
 
 server {
