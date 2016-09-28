@@ -11,14 +11,14 @@ $ ->
 
       textElement = $("#scrobblar-music")
       if not textElement.length
-        $(".bar-text-container").append(
+        $(".bar-container").append(
           "<p class='bar-text-music' id='scrobblar-music'>#{text}</p>"
         )
       else if text isnt textElement.text()
         textClone = textElement.clone true
         textElement.remove()
         textClone.text text
-        $(".bar-text-container").append textClone
+        $(".bar-container").append textClone
 
       art = data.recenttracks.track[0].image[0]['#text']
 

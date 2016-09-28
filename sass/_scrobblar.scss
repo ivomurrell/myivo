@@ -19,7 +19,7 @@ $bar-height: 34px;
 @keyframes scrobblar-fade-in {
 	0% {
 		opacity: 0;
-		transform: translateX(-9px);
+		transform: translateX(9px);
 	}
 
 	100% {
@@ -28,21 +28,25 @@ $bar-height: 34px;
 	}
 }
 
-.bar-text-container {
+%bar-text-container {
 	font-style: italic;
 	margin: auto;
-	margin-left: 14px;
 	overflow: hidden;
-	white-space: nowrap;
 }
 
 .bar-text-intro {
+	@extend %bar-text-container;
 	display: inline;
+	margin-left: 14px;
+	white-space: pre;
 }
 
 .bar-text-music {
-	animation: scrobblar-fade-in .4s .1s backwards ease-in;
+	@extend %bar-text-container;
+	animation: scrobblar-fade-in .4s .1s ease-in;
 	display: inline;
+	flex-grow: 1;
+	white-space: nowrap;
 }
 
 .bar-cover {
