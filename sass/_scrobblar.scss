@@ -28,13 +28,21 @@ $bar-height: 34px;
 	}
 }
 
-.bar-text {
-	animation: scrobblar-fade-in .4s .1s backwards ease-in;
+.bar-text-container {
 	font-style: italic;
 	margin: auto;
 	margin-left: 14px;
 	overflow: hidden;
 	white-space: nowrap;
+}
+
+.bar-text-intro {
+	display: inline;
+}
+
+.bar-text-music {
+	animation: scrobblar-fade-in .4s .1s backwards ease-in;
+	display: inline;
 }
 
 .bar-cover {

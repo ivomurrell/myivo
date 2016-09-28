@@ -1,23 +1,24 @@
 $ ->
   pollNowListening = () ->
     $.getJSON "https://oivov.io/scrobbles.json", (data) ->
+      nowplaying = data.recenttracks.track[0]['@attr']?.nowplaying
+      prefix = if nowplaying then "Now playing: " else "Last played: "
+      $("#scrobblar-prefix").text(prefix)
+      
       title = data.recenttracks.track[0].name
       artist = data.recenttracks.track[0].artist['#text']
       text = "#{title} - #{artist}"
-      nowplaying = data.recenttracks.track[0]['@attr']?.nowplaying
-      prefix = if nowplaying then "Now playing" else "Last played"
-      text = "#{prefix}: #{text}"
 
-      textElement = $("#scrobblar-text")
+      textElement = $("#scrobblar-music")
       if not textElement.length
-        $(".bar-container").prepend(
-          "<p class='bar-text' id='scrobblar-text'>#{text}</p>"
+        $(".bar-text-container").append(
+          "<p class='bar-text-music' id='scrobblar-music'>#{text}</p>"
         )
       else if text isnt textElement.text()
         textClone = textElement.clone true
         textElement.remove()
         textClone.text text
-        $(".bar-container").prepend textClone
+        $(".bar-text-container").append textClone
 
       art = data.recenttracks.track[0].image[0]['#text']
 
