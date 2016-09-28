@@ -22,7 +22,9 @@ $ ->
       art = data.recenttracks.track[0].image[0]['#text']
 
       coverElement = $("#scrobblar-art")
-      if not coverElement.length
+      if art is ""
+        coverElement.remove()
+      else if not coverElement.length
         $(".bar-container").append(
           "<img class='bar-cover' id='scrobblar-art'
             src='#{art}' alt='Cover art'></img>"
