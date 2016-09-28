@@ -26,7 +26,7 @@ $ ->
       if art is ""
         coverElement.remove()
       else if not coverElement.length
-        $(".bar-container").append(
+        $(".bar-container").prepend(
           "<img class='bar-cover' id='scrobblar-art'
             src='#{art}' alt='Cover art'></img>"
         )
@@ -34,7 +34,7 @@ $ ->
         coverClone = coverElement.clone true
         coverElement.remove()
         coverClone.attr "src", art
-        $(".bar-container").append coverClone
+        $(".bar-container").prepend coverClone
 
       setTimeout pollNowListening, 10000
 
