@@ -4,6 +4,7 @@ camera.zoom = 0.05
 
 canvas = document.getElementById "spinningCanvas"
 renderer = new THREE.WebGLRenderer {canvas: canvas, antialias: true}
+renderer.setPixelRatio window.devicePixelRatio ? 1
 renderer.setClearColor 0xffffff
 
 fLoader = new THREE.FontLoader()
