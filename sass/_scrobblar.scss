@@ -1,10 +1,7 @@
-$bar-height: 34px;
-
 .scrobble-bar {
 	$bar-background: #f4f4f4;
 	background: $bar-background;
 	bottom: 0;
-	height: $bar-height;
 	opacity: .95;
 	position: fixed;
 	width: 100%;
@@ -12,7 +9,6 @@ $bar-height: 34px;
 
 .bar-container {
 	display: flex;
-	height: $bar-height;
 	justify-content: flex-start;
 }
 

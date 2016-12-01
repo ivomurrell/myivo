@@ -21,6 +21,8 @@ $ ->
         $(".bar-container").append textClone
 
       art = data.recenttracks.track[0].image[0]['#text']
+      art2x = data.recenttracks.track[0].image[1]['#text']
+      art3x = data.recenttracks.track[0].image[2]['#text']
 
       coverElement = $("#scrobblar-art")
       if art is ""
@@ -28,7 +30,8 @@ $ ->
       else if not coverElement.length
         $(".bar-container").prepend(
           "<img class='bar-cover' id='scrobblar-art'
-            src='#{art}' alt='Cover art'></img>"
+            src='#{art}' alt='Cover art'
+            srcset='#{art}, #{art2x} 2x, #{art3x} 3x'></img>"
         )
       else if art isnt coverElement.attr "src"
         coverClone = coverElement.clone true
