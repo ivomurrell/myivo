@@ -4,8 +4,8 @@
 		"outDir": "jsts/",
 		"pretty": true,
 		"removeComments": true,
-		"sourceMap": true,
-		"target": "ES6"
+		"skipLibCheck": true,
+		"sourceMap": true
 	},
 	"include": [
 		"ts/**/*.ts"
