@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"noEmitOnError": true,
+		"outDir": "jsts/",
+		"pretty": true,
+		"removeComments": true,
+		"sourceMap": true,
+		"target": "ES6"
+	},
+	"include": [
+		"ts/**/*.ts"
+	]
+}
