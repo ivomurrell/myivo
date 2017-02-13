@@ -1,7 +1,6 @@
 $(() => {
     function toggleHeader() {
-        var title;
-        title = $("#title");
+        let title = $("#title");
 
         // Title must be showing before scrollWidth is calculated.
         title.show();
