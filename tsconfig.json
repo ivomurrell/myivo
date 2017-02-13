@@ -5,7 +5,8 @@
 		"pretty": true,
 		"removeComments": true,
 		"skipLibCheck": true,
-		"sourceMap": true
+		"sourceMap": true,
+		"strictNullChecks": true
 	},
 	"include": [
 		"ts/**/*.ts"

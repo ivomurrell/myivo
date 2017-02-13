@@ -1,24 +1,23 @@
-var camera, canvas, fLoader, renderer, scene, text, _ref;
-
-scene = new THREE.Scene();
-camera = new THREE.PerspectiveCamera(40, 25 / 10, 0.1, 1000);
+let scene = new THREE.Scene();
+let camera = new THREE.PerspectiveCamera(40, 25 / 10, 0.1, 1000);
 camera.zoom = 0.05;
 
-canvas = document.getElementById("spinningCanvas");
-renderer = new THREE.WebGLRenderer({
+let canvas = <HTMLCanvasElement> document.getElementById("spinningCanvas");
+let renderer = new THREE.WebGLRenderer({
     canvas: canvas,
     antialias: true
 });
-renderer.setPixelRatio((_ref = window.devicePixelRatio) != null ? _ref : 1);
+let ratio = window.devicePixelRatio != null ? window.devicePixelRatio : 1
+renderer.setPixelRatio(ratio);
 renderer.setClearColor(0xffffff);
 
-fLoader = new THREE.FontLoader();
-text = null;
+let fLoader = new THREE.FontLoader();
+let text: THREE.Mesh;
 fLoader.load("fonts/helvetiker_regular.typeface.json", (font) => {
     var geometry, material;
     geometry = new THREE.TextGeometry("Ivo", {
         size: 5,
-        font: font,
+        font: new THREE.Font(font),
         height: 2.5
     });
     material = new THREE.MeshBasicMaterial({
