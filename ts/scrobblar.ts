@@ -2,12 +2,12 @@ $(() => {
 	function pollNowListening() {
 		return $.getJSON("https://oivov.io/scrobbles.json", (data) => {
 			let trackData = data.recenttracks.track[0]["@attr"];
-			let nowplaying = trackData != null ? trackData.nowplaying : void 0;
+			let nowplaying = trackData != null ? trackData.nowplaying : 0;
 			let prefix = nowplaying ? "Now playing: " : "Last played: ";
 			$("#scrobblar-prefix").text(prefix);
 
-			let title = data.recenttracks.track[0].name;
-			let artist = data.recenttracks.track[0].artist["#text"];
+			let title: string = data.recenttracks.track[0].name;
+			let artist: string = data.recenttracks.track[0].artist["#text"];
 			let text = title + " - " + artist;
 
 			let textElement = $("#scrobblar-music");
@@ -23,9 +23,9 @@ $(() => {
 				$(".bar-container").append(textClone);
 			}
 
-			let art = data.recenttracks.track[0].image[0]["#text"];
-			let art2x = data.recenttracks.track[0].image[1]["#text"];
-			let art3x = data.recenttracks.track[0].image[2]["#text"];
+			let art: string = data.recenttracks.track[0].image[0]["#text"];
+			let art2x: string = data.recenttracks.track[0].image[1]["#text"];
+			let art3x: string = data.recenttracks.track[0].image[2]["#text"];
 
 			let coverElement = $("#scrobblar-art");
 			if (art === "") {
