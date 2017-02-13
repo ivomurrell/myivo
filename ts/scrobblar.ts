@@ -13,7 +13,8 @@ $(() => {
 			let textElement = $("#scrobblar-music");
 			if (!textElement.length) {
 				$(".bar-container").append(
-					`<p class='bar-text-music' id='scrobblar-music'>${text}</p>`
+					`<p class='bar-text-music' id='scrobblar-music'>${text}
+					</p>`
 				);
 			} else if (text !== textElement.text()) {
 				let textClone = textElement.clone(true);
