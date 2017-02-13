@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"noEmitOnError": true,
-		"outDir": "jsts/",
+		"outDir": "js/",
 		"pretty": true,
 		"removeComments": true,
 		"skipLibCheck": true,
