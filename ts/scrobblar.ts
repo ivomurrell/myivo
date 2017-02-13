@@ -23,7 +23,7 @@ $(() => {
 				$(".bar-container").append(textClone);
 			}
 
-			let art = data.recenttracks.track[0].image[0]["${text}"];
+			let art = data.recenttracks.track[0].image[0]["#text"];
 			let art2x = data.recenttracks.track[0].image[1]["#text"];
 			let art3x = data.recenttracks.track[0].image[2]["#text"];
 
