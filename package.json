@@ -11,8 +11,8 @@
   },
   "scripts": {
     "check": "tsc -noEmit",
-    "build": "npm run check && esbuild ts/main.ts --bundle --sourcemap --outfile=build/app.js",
-    "build:production": "npm run check && esbuild ts/main.ts --bundle --minify --outfile=build/app.min.js",
+    "build": "npm run check && node esbuild.js",
+    "build:production": "npm run check && ESBUILD_PRODUCTION=1 node esbuild.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ivo Murrell",
