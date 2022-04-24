@@ -1,3 +1,5 @@
+import * as THREE from "three"
+
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(40, 25 / 10, 0.1, 1000);
 camera.zoom = 0.05;

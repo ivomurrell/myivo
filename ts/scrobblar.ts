@@ -1,3 +1,5 @@
+import $ from "jquery"
+
 $(() => {
 	function pollNowListening() {
 		return $.getJSON("https://oivov.io/scrobbles.json", (data) => {

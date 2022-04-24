@@ -6,7 +6,8 @@
 		"removeComments": true,
 		"skipLibCheck": true,
 		"sourceMap": true,
-		"strictNullChecks": true
+		"strictNullChecks": true,
+		"esModuleInterop": true
 	},
 	"include": [
 		"ts/**/*.ts"
