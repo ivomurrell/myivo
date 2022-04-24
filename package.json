@@ -3,21 +3,10 @@
   "version": "1.0.0",
   "description": "Personal site for Ivo Murrell",
   "main": "index.js",
-  "dependencies": {},
   "devDependencies": {
-    "@types/jquery": "^2.0.40",
+    "@types/jquery": "^3.5.14",
     "@types/three": "^0.83.3",
-    "autoprefixer": "^6.4.1",
-    "cssnano": "^3.7.4",
-    "grunt": "^1.0.1",
-    "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-coffee": "^1.0.0",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-uglify": "^2.0.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-postcss": "^0.8.0",
-    "grunt-processhtml": "^0.4.1",
-    "grunt-sass": "^1.2.1"
+    "typescript": "^4.6.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
