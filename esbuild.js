@@ -1,3 +1,4 @@
+// @ts-check
 const esbuild = require('esbuild')
 const sassPlugin = require("esbuild-plugin-sass");
 
