@@ -1,51 +1,51 @@
 $min-header-height: 50px;
 
 @mixin header-height-break {
-	@media screen and (max-height: $min-header-height * 10) {
-		@content
-	}
+  @media screen and (max-height: $min-header-height * 10) {
+    @content;
+  }
 }
 
 .title {
-	flex: 1;
-	font: {
-		size: 6vh;
-		weight: bold;
-	}
-	margin: auto;
-	overflow: hidden;
-	padding-left: 3%;
-	white-space: nowrap;
+  flex: 1;
+  font: {
+    size: 6vh;
+    weight: bold;
+  }
+  margin: auto;
+  overflow: hidden;
+  padding-left: 3%;
+  white-space: nowrap;
 
-	@include header-height-break {
-		font-size: $min-header-height * (6 / 10);
-	}
+  @include header-height-break {
+    font-size: $min-header-height * (6 / 10);
+  }
 }
 
 $header-viewport-proportion: 10vh;
 
 .header-container {
-	$container-shadow-colour: #808080;
+  $container-shadow-colour: #808080;
 
-	align-items: center;
-	box-shadow: 0 2.4vh 1.2vh -2vh $container-shadow-colour;
-	display: flex;
-	height: $header-viewport-proportion;
-	justify-content: space-between;
-	min-height: $min-header-height;
-	position: relative;
+  align-items: center;
+  box-shadow: 0 2.4vh 1.2vh -2vh $container-shadow-colour;
+  display: flex;
+  height: $header-viewport-proportion;
+  justify-content: space-between;
+  min-height: $min-header-height;
+  position: relative;
 }
 
 .logo-gl {
-	$logo-aspect-ratio: 25 / 10;
+  $logo-aspect-ratio: 25 / 10;
 
-	flex: 1 0 content;
-	height: 100%;
-	margin: auto;
-	padding-right: 3%;
-	width: $header-viewport-proportion * $logo-aspect-ratio;
+  flex: 1 0 content;
+  height: 100%;
+  margin: auto;
+  padding-right: 3%;
+  width: $header-viewport-proportion * $logo-aspect-ratio;
 
-	@include header-height-break {
-		width: $min-header-height * $logo-aspect-ratio;
-	}
+  @include header-height-break {
+    width: $min-header-height * $logo-aspect-ratio;
+  }
 }

@@ -1,83 +1,85 @@
 $animation-padding: 100% / 1200 * 100;
 
 @mixin project-width-break {
-	@media screen and (max-width: 900px) {
-		@content
-	}
+  @media screen and (max-width: 900px) {
+    @content;
+  }
 }
 
 %project-container {
-	align-items: center;
-	display: flex;
-	$margin-strength: auto;
-	margin: {
-		bottom: 6vh;
-		left: $margin-strength;
-		right: $margin-strength;
-	}
-	max-width: 1000px;
-	padding: {
-		left: $animation-padding;
-		right: $animation-padding;
-	}
+  align-items: center;
+  display: flex;
+  $margin-strength: auto;
+  margin: {
+    bottom: 6vh;
+    left: $margin-strength;
+    right: $margin-strength;
+  }
+  max-width: 1000px;
+  padding: {
+    left: $animation-padding;
+    right: $animation-padding;
+  }
 
-	@include project-width-break {
-		flex-wrap: wrap-reverse;
-		width: auto;
-	}
+  @include project-width-break {
+    flex-wrap: wrap-reverse;
+    width: auto;
+  }
 }
 
 @each $alignment in left, right {
-	@keyframes project-fade-in-#{$alignment} {
-		0% {
-			opacity: 0;
-			$animation-translation: $animation-padding;
-			@if $alignment == left {$animation-translation: $animation-translation * -1;};
-			transform: translateX($animation-translation);
-		}
+  @keyframes project-fade-in-#{$alignment} {
+    0% {
+      opacity: 0;
+      $animation-translation: $animation-padding;
+      @if $alignment == left {
+        $animation-translation: $animation-translation * -1;
+      }
+      transform: translateX($animation-translation);
+    }
 
-		100% {
-			opacity: 100%;
-			transform: 0;
-		}
-	}
+    100% {
+      opacity: 100%;
+      transform: 0;
+    }
+  }
 
-	.project-container-#{$alignment} {
-		@extend %project-container;
-		animation: project-fade-in-#{$alignment} 2s .1s backwards ease;
-		@if $alignment == left {
-			flex-direction: row-reverse;
-		} @else {
-			flex-direction: row;
-		}
-	}
+  .project-container-#{$alignment} {
+    @extend %project-container;
+    animation: project-fade-in-#{$alignment} 2s 0.1s backwards ease;
+    @if $alignment == left {
+      flex-direction: row-reverse;
+    } @else {
+      flex-direction: row;
+    }
+  }
 
-	.project-desc-#{$alignment} {
-		margin-#{$alignment}: 2%;
-		$padding-strength: 4%;
-		@if $alignment == left {
-			padding-right: $padding-strength;
-		} @else {
-			padding-left: $padding-strength;
-		}
-		text-align: $alignment;
-	}
+  .project-desc-#{$alignment} {
+    margin-#{$alignment}: 2%;
+    $padding-strength: 4%;
+    @if $alignment == left {
+      padding-right: $padding-strength;
+    } @else {
+      padding-left: $padding-strength;
+    }
+    text-align: $alignment;
+  }
 }
 
 .project-title {
-	display: block;
-	font-size: 3em;
-	margin: auto;
+  display: block;
+  font-size: 3em;
+  margin: auto;
 }
 
 .project-thumbnail {
-	flex: 1 0 auto;
-	height: inherit;
-	margin: auto;
-	object-fit: contain;
-	width: 60%;
+  flex: 1 0 auto;
+  height: inherit;
+  margin: auto;
+  object-fit: contain;
+  width: 60%;
 
-	@include project-width-break {
-		margin-bottom: 12px;
-	}
+  @include project-width-break {
+    margin-bottom: 12px;
+  }
 }

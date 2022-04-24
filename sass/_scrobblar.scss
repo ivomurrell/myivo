@@ -1,52 +1,52 @@
 .scrobble-bar {
-	$bar-background: #f4f4f4;
-	background: $bar-background;
-	bottom: 0;
-	opacity: .95;
-	position: fixed;
-	width: 100%;
+  $bar-background: #f4f4f4;
+  background: $bar-background;
+  bottom: 0;
+  opacity: 0.95;
+  position: fixed;
+  width: 100%;
 }
 
 .bar-container {
-	display: flex;
-	justify-content: flex-start;
+  display: flex;
+  justify-content: flex-start;
 }
 
 @keyframes scrobblar-fade-in {
-	0% {
-		opacity: 0;
-		transform: translateX(9px);
-	}
+  0% {
+    opacity: 0;
+    transform: translateX(9px);
+  }
 
-	100% {
-		opacity: 1;
-		transform: 0;
-	}
+  100% {
+    opacity: 1;
+    transform: 0;
+  }
 }
 
 %bar-text-container {
-	font-style: italic;
-	margin: auto;
-	overflow: hidden;
+  font-style: italic;
+  margin: auto;
+  overflow: hidden;
 }
 
 .bar-text-intro {
-	@extend %bar-text-container;
-	display: inline;
-	margin-left: 11px;
-	white-space: pre;
+  @extend %bar-text-container;
+  display: inline;
+  margin-left: 11px;
+  white-space: pre;
 }
 
 .bar-text-music {
-	@extend %bar-text-container;
-	animation: scrobblar-fade-in .4s .1s ease-in;
-	display: inline;
-	flex-grow: 1;
-	white-space: nowrap;
+  @extend %bar-text-container;
+  animation: scrobblar-fade-in 0.4s 0.1s ease-in;
+  display: inline;
+  flex-grow: 1;
+  white-space: nowrap;
 }
 
 .bar-cover {
-	margin: auto;
-	margin-right: 0;
-	z-index: 1;
+  margin: auto;
+  margin-right: 0;
+  z-index: 1;
 }

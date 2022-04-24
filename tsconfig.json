@@ -1,15 +1,13 @@
 {
-	"compilerOptions": {
-		"noEmitOnError": true,
-		"outDir": "js/",
-		"pretty": true,
-		"removeComments": true,
-		"skipLibCheck": true,
-		"sourceMap": true,
-		"strictNullChecks": true,
-		"esModuleInterop": true
-	},
-	"include": [
-		"ts/**/*.ts"
-	]
+  "compilerOptions": {
+    "noEmitOnError": true,
+    "outDir": "js/",
+    "pretty": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "esModuleInterop": true
+  },
+  "include": ["ts/**/*.ts"]
 }
