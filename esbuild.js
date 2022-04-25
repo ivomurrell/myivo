@@ -1,7 +1,9 @@
 // @ts-check
 /* eslint-env node */
 const autoprefixer = require("autoprefixer");
+const browserslist = require("browserslist");
 const esbuild = require("esbuild");
+const { esbuildPluginBrowserslist } = require("esbuild-plugin-browserslist");
 const { sassPlugin } = require("esbuild-sass-plugin");
 const postcss = require("postcss");
 
@@ -19,6 +21,7 @@ const baseOptions = {
         return css;
       },
     }),
+    esbuildPluginBrowserslist(browserslist()),
   ],
 };
 
