@@ -1,7 +1,7 @@
 $min-header-height: 50px;
 
 @mixin header-height-break {
-  @media screen and (max-height: $min-header-height * 10) {
+  @media screen and (max-height: ($min-header-height * 10)) {
     @content;
   }
 }
