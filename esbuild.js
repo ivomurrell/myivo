@@ -21,7 +21,7 @@ const baseOptions = {
         return css;
       },
     }),
-    esbuildPluginBrowserslist(browserslist()),
+    esbuildPluginBrowserslist(browserslist(), { printUnknownTargets: false }),
   ],
 };
 
