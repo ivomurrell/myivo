@@ -6,10 +6,9 @@ const postcss = require("postcss");
 
 /** @type {esbuild.BuildOptions} */
 const baseOptions = {
-  entryPoints: ["ts/main.ts", "sass/main.scss"],
+  entryPoints: ["ts/main.ts"],
   bundle: true,
   logLevel: "info",
-  outdir: "build",
   plugins: [
     sassPlugin({
       async transform(source) {
@@ -26,6 +25,7 @@ if (process.env.ESBUILD_PRODUCTION) {
     .build({
       ...baseOptions,
       minify: true,
+      outfile: "build/app.min.js",
     })
     .catch(() => process.exit(1));
 } else {
@@ -33,6 +33,7 @@ if (process.env.ESBUILD_PRODUCTION) {
     .build({
       ...baseOptions,
       sourcemap: true,
+      outfile: "build/app.js",
     })
     .catch(() => process.exit(1));
 }
