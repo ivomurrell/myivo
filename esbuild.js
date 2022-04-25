@@ -6,7 +6,7 @@ const postcss = require("postcss");
 
 /** @type {esbuild.BuildOptions} */
 const baseOptions = {
-  entryPoints: ["ts/main.ts"],
+  entryPoints: ["src/ts/main.ts"],
   bundle: true,
   logLevel: "info",
   plugins: [
