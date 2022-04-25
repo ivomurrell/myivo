@@ -1,4 +1,5 @@
 // @ts-check
+/* eslint-env node */
 const autoprefixer = require("autoprefixer");
 const esbuild = require("esbuild");
 const { sassPlugin } = require("esbuild-sass-plugin");
@@ -12,6 +13,7 @@ const baseOptions = {
   plugins: [
     sassPlugin({
       async transform(source) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore postcss type definition seems to be borked
         const { css } = await postcss([autoprefixer]).process(source);
         return css;

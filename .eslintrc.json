@@ -2,5 +2,16 @@
   "root": true,
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"]
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "env": { "browser": true },
+  "overrides": [
+    {
+      "files": ["*.js"],
+      "rules": { "@typescript-eslint/no-var-requires": "off" }
+    }
+  ]
 }
