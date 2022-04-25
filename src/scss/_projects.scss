@@ -1,4 +1,6 @@
-$animation-padding: 100% / 1200 * 100;
+@use "sass:math";
+
+$animation-padding: math.div(100%, 1200) * 100;
 
 @mixin project-width-break {
   @media screen and (max-width: 900px) {
