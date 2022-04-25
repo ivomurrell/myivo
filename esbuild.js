@@ -14,10 +14,12 @@ const baseOptions = {
   logLevel: "info",
   plugins: [
     sassPlugin({
-      async transform(source) {
+      async transform(source, _resolveDir, filePath) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore postcss type definition seems to be borked
-        const { css } = await postcss([autoprefixer]).process(source);
+        const { css } = await postcss([autoprefixer]).process(source, {
+          from: filePath,
+        });
         return css;
       },
     }),
