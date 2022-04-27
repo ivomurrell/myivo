@@ -18,7 +18,8 @@ let text: THREE.Mesh;
 fLoader.load("fonts/helvetiker_regular.typeface.json", (font) => {
   const geometry = new THREE.TextGeometry("Ivo", {
     size: 5,
-    font: new THREE.Font(font),
+    // incorrect type from FontLoader definition
+    font: font as unknown as THREE.Font,
     height: 2.5,
   });
   const material = new THREE.MeshBasicMaterial({
