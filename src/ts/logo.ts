@@ -1,4 +1,6 @@
 import * as THREE from "three";
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(40, 25 / 10, 0.1, 1000);
@@ -13,13 +15,12 @@ const ratio = window.devicePixelRatio != null ? window.devicePixelRatio : 1;
 renderer.setPixelRatio(ratio);
 renderer.setClearColor(0xffffff);
 
-const fLoader = new THREE.FontLoader();
+const fLoader = new FontLoader();
 let text: THREE.Mesh;
 fLoader.load("fonts/helvetiker_regular.typeface.json", (font) => {
-  const geometry = new THREE.TextGeometry("Ivo", {
+  const geometry = new TextGeometry("Ivo", {
     size: 5,
-    // incorrect type from FontLoader definition
-    font: font as unknown as THREE.Font,
+    font,
     height: 2.5,
   });
   const material = new THREE.MeshBasicMaterial({

@@ -5,7 +5,7 @@
   "main": "index.js",
   "devDependencies": {
     "@types/node": "^17.0.25",
-    "@types/three": "^0.83.3",
+    "@types/three": "^0.139.0",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
     "autoprefixer": "^10.4.5",
@@ -37,6 +37,6 @@
   },
   "dependencies": {
     "normalize.css": "^8.0.1",
-    "three": "^0.83.0"
+    "three": "^0.139.2"
   }
 }
