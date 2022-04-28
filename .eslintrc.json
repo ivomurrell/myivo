@@ -11,7 +11,15 @@
   "overrides": [
     {
       "files": ["*.js"],
-      "rules": { "@typescript-eslint/no-var-requires": "off" }
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    },
+    {
+      "files": ["*.ts"],
+      "rules": {
+        "@typescript-eslint/no-non-null-assertion": "off"
+      }
     }
   ]
 }
