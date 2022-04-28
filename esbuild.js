@@ -7,6 +7,8 @@ const { esbuildPluginBrowserslist } = require("esbuild-plugin-browserslist");
 const { sassPlugin } = require("esbuild-sass-plugin");
 const postcss = require("postcss");
 
+const argv = require("minimist")(process.argv.slice(2));
+
 /** @type {esbuild.BuildOptions} */
 const baseOptions = {
   entryPoints: ["src/ts/main.ts"],
@@ -27,14 +29,17 @@ const baseOptions = {
   ],
 };
 
-if (process.env.ESBUILD_PRODUCTION) {
+const prodOptions = {
+  ...baseOptions,
+  minify: true,
+  outfile: "build/app.min.js",
+};
+if (argv.prod) {
+  esbuild.build(prodOptions).catch(() => process.exit(1));
+} else if (argv.serve) {
   esbuild
-    .build({
-      ...baseOptions,
-      minify: true,
-      outfile: "build/app.min.js",
-    })
-    .catch(() => process.exit(1));
+    .serve({ servedir: "." }, prodOptions)
+    .then(({ port }) => console.log(`serving at http://localhost:${port}`));
 } else {
   esbuild
     .build({
