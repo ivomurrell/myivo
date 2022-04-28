@@ -1,13 +1,18 @@
-import * as THREE from "three";
-import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+import { PerspectiveCamera } from "three/src/cameras/PerspectiveCamera.js";
+import { MeshBasicMaterial } from "three/src/materials/MeshBasicMaterial.js";
+import { Mesh } from "three/src/objects/Mesh.js";
+import { WebGLRenderer } from "three/src/renderers/WebGLRenderer.js";
+import { Scene } from "three/src/scenes/Scene.js";
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(40, 25 / 10, 0.1, 1000);
+import { FontLoader } from "./three/FontLoader.js";
+import { TextGeometry } from "./three/TextGeometry.js";
+
+const scene = new Scene();
+const camera = new PerspectiveCamera(40, 25 / 10, 0.1, 1000);
 camera.zoom = 0.05;
 
 const canvas = <HTMLCanvasElement>document.getElementById("spinningCanvas");
-const renderer = new THREE.WebGLRenderer({
+const renderer = new WebGLRenderer({
   canvas: canvas,
   antialias: true,
 });
@@ -23,10 +28,10 @@ fLoader.load("fonts/helvetiker_regular.typeface.json", (font) => {
     font,
     height: 2.5,
   });
-  const material = new THREE.MeshBasicMaterial({
+  const material = new MeshBasicMaterial({
     color: 0xff0000,
   });
-  text = new THREE.Mesh(geometry, material);
+  text = new Mesh(geometry, material);
   return scene.add(text);
 });
 
