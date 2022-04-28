@@ -21,7 +21,7 @@
     "typescript": "^4.6.3"
   },
   "scripts": {
-    "check": "tsc -noEmit",
+    "check": "tsc",
     "build": "npm run check && node esbuild.js",
     "build:production": "npm run check && node esbuild.js --prod",
     "start": "node esbuild.js --serve",
