@@ -29,23 +29,23 @@ const baseOptions = {
   ],
 };
 
-const prodOptions = {
+const devOptions = {
   ...baseOptions,
-  minify: true,
-  outfile: "build/app.min.js",
+  sourcemap: true,
+  outfile: "build/app.js",
 };
 if (argv.prod) {
-  esbuild.build(prodOptions).catch(() => process.exit(1));
-} else if (argv.serve) {
-  esbuild
-    .serve({ servedir: "." }, prodOptions)
-    .then(({ port }) => console.log(`serving at http://localhost:${port}`));
-} else {
   esbuild
     .build({
       ...baseOptions,
-      sourcemap: true,
-      outfile: "build/app.js",
+      minify: true,
+      outfile: "build/app.min.js",
     })
     .catch(() => process.exit(1));
+} else if (argv.serve) {
+  esbuild
+    .serve({ servedir: "." }, devOptions)
+    .then(({ port }) => console.log(`serving at http://localhost:${port}`));
+} else {
+  esbuild.build(devOptions).catch(() => process.exit(1));
 }
