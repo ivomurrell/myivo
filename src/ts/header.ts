@@ -1,17 +1,13 @@
-import $ from "jquery";
+function toggleHeader() {
+  const title = document.getElementById("title")!;
 
-$(() => {
-  function toggleHeader() {
-    const title = $("#title");
-
-    // Title must be showing before scrollWidth is calculated.
-    title.show();
-    if (title[0].scrollWidth > Math.ceil(title.innerWidth() ?? 0)) {
-      return title.hide();
-    }
+  // Title must be showing before scrollWidth is calculated.
+  title.style.display = "";
+  if (title.scrollWidth > title.offsetWidth) {
+    title.style.display = "none";
   }
+}
 
-  window.addEventListener("resize", toggleHeader);
+window.addEventListener("resize", toggleHeader);
 
-  return toggleHeader();
-});
+toggleHeader();

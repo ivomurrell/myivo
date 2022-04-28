@@ -1,53 +1,54 @@
-import $ from "jquery";
+async function pollNowListening() {
+  const resp = await fetch("https://oivov.io/scrobbles.json");
+  const data = await resp.json();
+  const trackData = data.recenttracks.track[0]["@attr"];
+  const nowPlaying = trackData != null ? trackData.nowplaying : 0;
+  const prefix = nowPlaying ? "Now playing: " : "Last played: ";
+  const scrobblarPrefix = document.getElementById("scrobblar-prefix")!;
+  scrobblarPrefix.textContent = prefix;
 
-$(() => {
-  function pollNowListening() {
-    return $.getJSON("https://oivov.io/scrobbles.json", (data) => {
-      const trackData = data.recenttracks.track[0]["@attr"];
-      const nowplaying = trackData != null ? trackData.nowplaying : 0;
-      const prefix = nowplaying ? "Now playing: " : "Last played: ";
-      $("#scrobblar-prefix").text(prefix);
+  const title: string = data.recenttracks.track[0].name;
+  const artist: string = data.recenttracks.track[0].artist["#text"];
+  const text = title + " - " + artist;
 
-      const title: string = data.recenttracks.track[0].name;
-      const artist: string = data.recenttracks.track[0].artist["#text"];
-      const text = title + " - " + artist;
-
-      const textElement = $("#scrobblar-music");
-      if (!textElement.length) {
-        $(".bar-container").append(
-          `<p class='bar-text-music' id='scrobblar-music'>${text}
-					</p>`
-        );
-      } else if (text !== textElement.text()) {
-        const textClone = textElement.clone(true);
-        textElement.remove();
-        textClone.text(text);
-        $(".bar-container").append(textClone);
-      }
-
-      const art: string = data.recenttracks.track[0].image[0]["#text"];
-      const art2x: string = data.recenttracks.track[0].image[1]["#text"];
-      const art3x: string = data.recenttracks.track[0].image[2]["#text"];
-
-      const coverElement = $("#scrobblar-art");
-      if (art === "") {
-        coverElement.remove();
-      } else if (!coverElement.length) {
-        $(".bar-container").prepend(
-          `<img class='bar-cover' id='scrobblar-art'
-					src='${art}' alt='Cover art'
-					srcset='${art}, ${art2x} 2x, ${art3x} 3x'></img>`
-        );
-      } else if (art !== coverElement.attr("src")) {
-        const coverClone = coverElement.clone(true);
-        coverElement.remove();
-        coverClone.attr("src", art);
-        $(".bar-container").prepend(coverClone);
-      }
-
-      return setTimeout(pollNowListening, 10000);
-    });
+  const textElement = document.getElementById("scrobblar-music");
+  const container = document.getElementById("bar-container")!;
+  if (!textElement) {
+    const scrobblarMusic = document.createElement("p");
+    scrobblarMusic.className = "bar-text-music";
+    scrobblarMusic.id = "scrobblar-music";
+    scrobblarMusic.appendChild(document.createTextNode(text));
+    container.appendChild(scrobblarMusic);
+  } else if (text !== textElement.textContent) {
+    const textClone = textElement.cloneNode(true);
+    textElement.remove();
+    textClone.textContent = text;
+    container.appendChild(textClone);
   }
 
-  return pollNowListening();
-});
+  const art: string = data.recenttracks.track[0].image[0]["#text"];
+  const art2x: string = data.recenttracks.track[0].image[1]["#text"];
+  const art3x: string = data.recenttracks.track[0].image[2]["#text"];
+
+  const coverElement = document.getElementById("scrobblar-art");
+  if (art === "") {
+    coverElement?.remove();
+  } else if (!coverElement) {
+    const scrobblarArt = document.createElement("img");
+    scrobblarArt.className = "bar-cover";
+    scrobblarArt.id = "scrobblar-art";
+    scrobblarArt.src = art;
+    scrobblarArt.alt = "Cover art";
+    scrobblarArt.srcset = `${art}, ${art2x} 2x, ${art3x} 3x`;
+    container.prepend(scrobblarArt);
+  } else if (art !== coverElement.getAttribute("src")) {
+    const coverClone = coverElement.cloneNode(true) as HTMLElement;
+    coverElement.remove();
+    coverClone.setAttribute("src", art);
+    container.prepend(coverClone);
+  }
+
+  setTimeout(pollNowListening, 10000);
+}
+
+pollNowListening();

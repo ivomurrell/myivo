@@ -4,7 +4,6 @@
   "description": "Personal site for Ivo Murrell",
   "main": "index.js",
   "devDependencies": {
-    "@types/jquery": "^3.5.14",
     "@types/node": "^17.0.25",
     "@types/three": "^0.83.3",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
@@ -37,7 +36,6 @@
     "url": "https://github.com/ivomurrell/myivo.git"
   },
   "dependencies": {
-    "jquery": "^3.1.0",
     "normalize.css": "^8.0.1",
     "three": "^0.83.0"
   }
