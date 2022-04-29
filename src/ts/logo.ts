@@ -11,12 +11,12 @@ const scene = new Scene();
 const camera = new PerspectiveCamera(40, 25 / 10, 0.1, 1000);
 camera.zoom = 0.05;
 
-const canvas = <HTMLCanvasElement>document.getElementById("spinningCanvas");
+const canvas = document.getElementById("spinningCanvas") as HTMLCanvasElement;
 const renderer = new WebGLRenderer({
-  canvas: canvas,
+  canvas,
   antialias: true,
 });
-const ratio = window.devicePixelRatio != null ? window.devicePixelRatio : 1;
+const ratio = window.devicePixelRatio ?? 1;
 renderer.setPixelRatio(ratio);
 renderer.setClearColor(0xffffff);
 
@@ -45,7 +45,7 @@ function render() {
     text.rotation.y += 0.1;
   }
 
-  return renderer.render(scene, camera);
+  renderer.render(scene, camera);
 }
 
 render();

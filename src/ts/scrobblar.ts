@@ -1,15 +1,16 @@
 async function pollNowListening() {
   const resp = await fetch("https://oivov.io/scrobbles.json");
   const data = await resp.json();
-  const trackData = data.recenttracks.track[0]["@attr"];
-  const nowPlaying = trackData != null ? trackData.nowplaying : 0;
+  const track = data.recenttracks.track[0];
+  const trackData = track["@attr"];
+  const nowPlaying = trackData?.nowplaying ?? false;
   const prefix = nowPlaying ? "Now playing: " : "Last played: ";
   const scrobblarPrefix = document.getElementById("scrobblar-prefix")!;
   scrobblarPrefix.textContent = prefix;
 
-  const title: string = data.recenttracks.track[0].name;
-  const artist: string = data.recenttracks.track[0].artist["#text"];
-  const text = title + " - " + artist;
+  const title: string = track.name;
+  const artist: string = track.artist["#text"];
+  const text = `${title} - ${artist}`;
 
   const textElement = document.getElementById("scrobblar-music");
   const container = document.getElementById("bar-container")!;
@@ -26,9 +27,9 @@ async function pollNowListening() {
     container.appendChild(textClone);
   }
 
-  const art: string = data.recenttracks.track[0].image[0]["#text"];
-  const art2x: string = data.recenttracks.track[0].image[1]["#text"];
-  const art3x: string = data.recenttracks.track[0].image[2]["#text"];
+  const art: string = track.image[0]["#text"];
+  const art2x: string = track.image[1]["#text"];
+  const art3x: string = track.image[2]["#text"];
 
   const coverElement = document.getElementById("scrobblar-art");
   if (art === "") {
