@@ -31,7 +31,9 @@ async function pollNowListening() {
   const art2x: string = track.image[1]["#text"];
   const art3x: string = track.image[2]["#text"];
 
-  const coverElement = document.getElementById("scrobblar-art");
+  const coverElement = document.getElementById("scrobblar-art") as
+    | HTMLImageElement
+    | undefined;
   if (art === "") {
     coverElement?.remove();
   } else if (!coverElement) {
@@ -42,11 +44,9 @@ async function pollNowListening() {
     scrobblarArt.alt = "Cover art";
     scrobblarArt.srcset = `${art}, ${art2x} 2x, ${art3x} 3x`;
     container.prepend(scrobblarArt);
-  } else if (art !== coverElement.getAttribute("src")) {
-    const coverClone = coverElement.cloneNode(true) as HTMLElement;
-    coverElement.remove();
-    coverClone.setAttribute("src", art);
-    container.prepend(coverClone);
+  } else if (art !== coverElement.src) {
+    coverElement.src = art;
+    coverElement.srcset = `${art}, ${art2x} 2x, ${art3x} 3x`;
   }
 
   setTimeout(pollNowListening, 10000);
