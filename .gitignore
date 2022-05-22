@@ -4,3 +4,4 @@ node_modules
 /frontend/styles
 /frontend/css
 /frontend/images
+/server/target
