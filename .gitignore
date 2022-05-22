@@ -1,11 +1,6 @@
-/bower_components
-/node_modules
-/fonts
-/build
-/js
-/styles
-/css
-/dist
-/images
-/misc
-*.sublime-workspace
+node_modules
+/frontend/fonts
+/frontend/build
+/frontend/styles
+/frontend/css
+/frontend/images
