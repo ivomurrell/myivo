@@ -10,7 +10,8 @@ use axum::{
     routing::{get, get_service},
     Extension, Router,
 };
-use tower_http::{services::ServeDir, trace::TraceLayer};
+use tower::ServiceBuilder;
+use tower_http::{compression::CompressionLayer, services::ServeDir, trace::TraceLayer};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -21,8 +22,12 @@ async fn main() -> anyhow::Result<()> {
     let app = Router::new()
         .route("/scrobbles.json", get(get_scrobble))
         .fallback(get_service(ServeDir::new(".")).handle_error(handle_serve_error))
-        .layer(Extension(monitor))
-        .layer(TraceLayer::new_for_http());
+        .layer(
+            ServiceBuilder::new()
+                .layer(TraceLayer::new_for_http())
+                .layer(CompressionLayer::new())
+                .layer(Extension(monitor)),
+        );
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
     tracing::debug!("starting server on {addr}");
