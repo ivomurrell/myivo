@@ -1,0 +1,8 @@
+*
+!frontend
+frontend/node_modules
+frontend/src
+frontend/esbuild.js
+frontend/tsconfig.json
+!server
+server/target
