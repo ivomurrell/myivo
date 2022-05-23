@@ -1,5 +1,5 @@
 async function pollNowListening() {
-  const resp = await fetch("https://oivov.io/scrobbles.json");
+  const resp = await fetch("/scrobbles.json");
   const data = await resp.json();
   const track = data.recenttracks.track[0];
   const trackData = track["@attr"];
