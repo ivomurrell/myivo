@@ -20,7 +20,8 @@ server {
 
 	index index.html;
 
-	server_name oivov.io;
+	gzip on;
+	gzip_types application/octet-stream;
 
 	location / {
 		try_files $uri $uri/ =404;
@@ -42,6 +43,10 @@ server {
 	}
 
 	location /scrobbles.json {
+		if ($request_method = 'GET') {
+			add_header 'Access-Control-Allow-Origin' '*' always;
+		}
+
 		proxy_pass https://localhost:8345;
 	}
 }
