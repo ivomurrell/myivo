@@ -24,7 +24,7 @@ async fn main() -> anyhow::Result<()> {
         .layer(Extension(monitor))
         .layer(TraceLayer::new_for_http());
 
-    let addr = SocketAddr::from(([0, 0, 0, 0], 8010));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
     tracing::debug!("starting server on {addr}");
     axum::Server::bind(&addr)
         .serve(app.into_make_service())

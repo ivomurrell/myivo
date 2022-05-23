@@ -13,6 +13,6 @@ RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 COPY frontend .
 COPY --from=builder /usr/local/cargo/bin/myivo-server /usr/local/bin/myivo-server
 
-EXPOSE 8010
+EXPOSE 8080
 
 CMD ["myivo-server"]
