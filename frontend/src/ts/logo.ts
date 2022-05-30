@@ -46,6 +46,7 @@ function render(now: DOMHighResTimeStamp) {
 
   if (text) {
     text.rotation.y += elapsed * 0.006;
+    text.rotation.y %= 2 * Math.PI;
   }
 
   renderer.render(scene, camera);
