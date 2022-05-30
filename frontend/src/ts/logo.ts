@@ -7,6 +7,8 @@ import { Scene } from "three/src/scenes/Scene.js";
 import { FontLoader } from "./three/FontLoader.js";
 import { TextGeometry } from "./three/TextGeometry.js";
 
+let previous: DOMHighResTimeStamp;
+
 const scene = new Scene();
 const camera = new PerspectiveCamera(40, 25 / 10, 0.1, 1000);
 camera.zoom = 0.05;
@@ -38,14 +40,17 @@ fLoader.load("fonts/helvetiker_regular.typeface.json", (font) => {
 camera.position.y = 1.9;
 camera.position.z = 15;
 
-function render() {
-  requestAnimationFrame(render);
+function render(now: DOMHighResTimeStamp) {
+  const elapsed = now - (previous ?? now);
+  previous = now;
 
   if (text) {
-    text.rotation.y += 0.1;
+    text.rotation.y += elapsed * 0.006;
   }
 
   renderer.render(scene, camera);
+
+  requestAnimationFrame(render);
 }
 
-render();
+requestAnimationFrame(render);
