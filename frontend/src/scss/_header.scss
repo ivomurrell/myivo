@@ -41,7 +41,6 @@ $header-viewport-proportion: 10vh;
 .logo-gl {
   $logo-aspect-ratio: math.div(25, 10);
 
-  flex: 1 0 content;
   height: 100%;
   margin: auto;
   padding-right: 3%;
