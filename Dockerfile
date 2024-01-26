@@ -8,7 +8,7 @@ RUN npm install
 COPY frontend .
 RUN npm run build:production
 
-FROM rust:1.61 as builder-rs
+FROM rust:1.74-buster as builder-rs
 
 WORKDIR /usr/src/myivo-server
 COPY server .
