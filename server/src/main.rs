@@ -5,13 +5,16 @@ use std::{env, io, net::SocketAddr};
 use crate::scrobble_monitor::ScrobbleMonitor;
 
 use axum::{
-    http::StatusCode,
+    http::{HeaderName, HeaderValue, StatusCode},
     response::IntoResponse,
     routing::{get, get_service},
     Extension, Router,
 };
 use tower::ServiceBuilder;
-use tower_http::{compression::CompressionLayer, services::ServeDir, trace::TraceLayer};
+use tower_http::{
+    compression::CompressionLayer, services::ServeDir, set_header::SetResponseHeaderLayer,
+    trace::TraceLayer,
+};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -26,7 +29,11 @@ async fn main() -> anyhow::Result<()> {
             ServiceBuilder::new()
                 .layer(TraceLayer::new_for_http())
                 .layer(CompressionLayer::new())
-                .layer(Extension(monitor)),
+                .layer(Extension(monitor))
+                .layer(SetResponseHeaderLayer::overriding(
+                    HeaderName::from_static("strict-transport-security"),
+                    HeaderValue::from_static("max-age=300; includeSubDomains"),
+                )),
         );
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
