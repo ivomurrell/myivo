@@ -61,7 +61,7 @@ impl ScrobbleMonitor {
     async fn fetch_scrobble(&self) -> anyhow::Result<String> {
         let response = self
             .client
-            .get("http://ws.audioscrobbler.com/2.0")
+            .get("https://ws.audioscrobbler.com/2.0")
             .query(&[
                 ("method", "user.getRecentTracks"),
                 ("api_key", &self.api_key),
