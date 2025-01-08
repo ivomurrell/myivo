@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable */
 import type { Shape } from "three/src/extras/core/Shape.js";
 import { ShapePath } from "three/src/extras/core/ShapePath.js";
 import { FileLoader } from "three/src/loaders/FileLoader.js";
@@ -28,7 +28,7 @@ class FontLoader extends Loader {
         text = text as string;
         try {
           json = JSON.parse(text);
-        } catch (e) {
+        } catch {
           console.warn(
             "THREE.FontLoader: typeface.js support is being deprecated. Use typeface.json instead."
           );

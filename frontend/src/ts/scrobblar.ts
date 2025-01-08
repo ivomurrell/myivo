@@ -60,7 +60,7 @@ async function pollNowListening() {
     coverElement.srcset = `${art}, ${art2x} 2x, ${art3x} 3x`;
   }
 
-  setTimeout(pollNowListening, 10000);
+  setTimeout(() => void pollNowListening(), 10000);
 }
 
-pollNowListening();
+void pollNowListening();

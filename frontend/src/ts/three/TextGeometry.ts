@@ -19,7 +19,7 @@ import {
   ExtrudeGeometry,
   ExtrudeGeometryOptions,
 } from "three/src/geometries/ExtrudeGeometry.js";
-import { Font } from "./FontLoader";
+import { Font } from "./FontLoader.js";
 
 export interface TextGeometryParameters {
   font?: Font;
