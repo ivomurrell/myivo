@@ -2,7 +2,8 @@
   "compilerOptions": {
     "noEmit": true,
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "module": "nodenext"
   },
   "include": ["src/ts/**/*.ts"]
 }

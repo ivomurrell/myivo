@@ -1,5 +1,4 @@
 // @ts-check
-/* eslint-env node */
 import browserslist from "browserslist";
 import esbuild from "esbuild";
 import { esbuildPluginBrowserslist } from "esbuild-plugin-browserslist";
@@ -11,6 +10,7 @@ const argv = minimist(process.argv.slice(2));
 const baseOptions = {
   entryPoints: ["src/ts/main.ts"],
   bundle: true,
+  format: "esm",
   logLevel: "info",
   plugins: [
     esbuildPluginBrowserslist(browserslist(), { printUnknownTargets: false }),
