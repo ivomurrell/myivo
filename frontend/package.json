@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Personal site for Ivo Murrell",
   "main": "index.js",
+  "type": "module",
   "devDependencies": {
     "@types/node": "^22.10.5",
     "@types/three": "^0.139.0",

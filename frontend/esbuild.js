@@ -1,10 +1,11 @@
 // @ts-check
 /* eslint-env node */
-const browserslist = require("browserslist");
-const esbuild = require("esbuild");
-const { esbuildPluginBrowserslist } = require("esbuild-plugin-browserslist");
+import browserslist from "browserslist";
+import esbuild from "esbuild";
+import { esbuildPluginBrowserslist } from "esbuild-plugin-browserslist";
+import minimist from "minimist";
 
-const argv = require("minimist")(process.argv.slice(2));
+const argv = minimist(process.argv.slice(2));
 
 /** @type {esbuild.BuildOptions} */
 const baseOptions = {
@@ -22,18 +23,15 @@ const devOptions = {
   outfile: "build/app.js",
 };
 if (argv.prod) {
-  esbuild
-    .build({
-      ...baseOptions,
-      minify: true,
-      outfile: "build/app.min.js",
-    })
-    .catch(() => process.exit(1));
+  await esbuild.build({
+    ...baseOptions,
+    minify: true,
+    outfile: "build/app.min.js",
+  });
 } else if (argv.serve) {
-  esbuild
-    .context(devOptions)
-    .then((context) => context.serve({ servedir: "." }))
-    .then(({ port }) => console.log(`serving at http://localhost:${port}`));
+  const context = await esbuild.context(devOptions);
+  const { port } = await context.serve({ servedir: "." });
+  console.log(`serving at http://localhost:${port}`);
 } else {
-  esbuild.build(devOptions).catch(() => process.exit(1));
+  await esbuild.build(devOptions);
 }
