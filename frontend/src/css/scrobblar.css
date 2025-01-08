@@ -1,6 +1,5 @@
 .scrobble-bar {
-  $bar-background: #f4f4f4;
-  background: $bar-background;
+  background: #f4f4f4;
   bottom: 0;
   opacity: 0.95;
   position: fixed;
@@ -24,21 +23,19 @@
   }
 }
 
-%bar-text-container {
+.bar-container {
   font-style: italic;
   margin: auto;
   overflow: hidden;
 }
 
 .bar-text-intro {
-  @extend %bar-text-container;
   display: inline;
   margin-left: 11px;
   white-space: pre;
 }
 
 .bar-text-music {
-  @extend %bar-text-container;
   animation: scrobblar-fade-in 0.4s 0.1s ease-in;
   display: inline;
   flex-grow: 1;

@@ -1,11 +1,8 @@
 // @ts-check
 /* eslint-env node */
-const autoprefixer = require("autoprefixer");
 const browserslist = require("browserslist");
 const esbuild = require("esbuild");
 const { esbuildPluginBrowserslist } = require("esbuild-plugin-browserslist");
-const { sassPlugin } = require("esbuild-sass-plugin");
-const postcss = require("postcss");
 
 const argv = require("minimist")(process.argv.slice(2));
 
@@ -15,16 +12,6 @@ const baseOptions = {
   bundle: true,
   logLevel: "info",
   plugins: [
-    sassPlugin({
-      async transform(source, _resolveDir, filePath) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore postcss type definition seems to be borked
-        const { css } = await postcss([autoprefixer]).process(source, {
-          from: filePath,
-        });
-        return css;
-      },
-    }),
     esbuildPluginBrowserslist(browserslist(), { printUnknownTargets: false }),
   ],
 };
@@ -44,7 +31,8 @@ if (argv.prod) {
     .catch(() => process.exit(1));
 } else if (argv.serve) {
   esbuild
-    .serve({ servedir: "." }, devOptions)
+    .context(devOptions)
+    .then((context) => context.serve({ servedir: "." }))
     .then(({ port }) => console.log(`serving at http://localhost:${port}`));
 } else {
   esbuild.build(devOptions).catch(() => process.exit(1));
