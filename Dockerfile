@@ -1,4 +1,4 @@
-FROM node:16 as build-js
+FROM node:22 AS build-js
 
 WORKDIR /usr/src/myivo
 
@@ -8,7 +8,7 @@ RUN npm install
 COPY frontend .
 RUN npm run build:production
 
-FROM rust:1.74-buster as builder-rs
+FROM rust:1.83 AS builder-rs
 
 WORKDIR /usr/src/myivo-server
 COPY server .
@@ -16,7 +16,7 @@ COPY server .
 RUN cargo install --profile release --locked --path .
 
 # run on different image
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 
 RUN apt-get update \
  && apt-get install -y openssl ca-certificates \
