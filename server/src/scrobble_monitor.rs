@@ -3,20 +3,60 @@ use std::{
     time::{Duration, Instant},
 };
 
+use maud::{html, Markup};
 use reqwest::Client;
+use serde::Deserialize;
 use tokio::sync::RwLock;
 
 #[derive(Debug, Clone)]
-struct Scrobble {
-    data: String,
+struct CachedScrobble {
+    data: Markup,
     fetch_time: Instant,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+struct ScrobbleArtist {
+    #[serde(rename = "#text")]
+    text: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+struct ScrobbleImage {
+    #[serde(rename = "#text")]
+    text: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+struct ScrobbleAttributes {
+    #[serde(rename = "nowplaying")]
+    now_playing: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+struct ScrobbleTrack {
+    artist: ScrobbleArtist,
+    image: Vec<ScrobbleImage>,
+    name: String,
+    #[serde(rename = "@attr")]
+    attributes: Option<ScrobbleAttributes>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+struct ScrobbleRecentTracks {
+    track: Vec<ScrobbleTrack>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+struct Scrobble {
+    #[serde(rename = "recenttracks")]
+    recent_tracks: ScrobbleRecentTracks,
 }
 
 #[derive(Debug, Clone)]
 pub struct ScrobbleMonitor {
     client: Client,
     api_key: String,
-    last_scrobble: Arc<RwLock<Option<Scrobble>>>,
+    last_scrobble: Arc<RwLock<Option<CachedScrobble>>>,
 }
 
 impl ScrobbleMonitor {
@@ -28,7 +68,7 @@ impl ScrobbleMonitor {
         }
     }
 
-    pub async fn get_scrobble(&mut self) -> anyhow::Result<String> {
+    pub async fn get_scrobble(&mut self) -> anyhow::Result<Markup> {
         let is_fresh = |fetch_time: &Instant| fetch_time.elapsed() < Duration::from_secs(30);
 
         if let Some(scrobble) = &*self.last_scrobble.read().await {
@@ -48,17 +88,18 @@ impl ScrobbleMonitor {
             }
             _ => {
                 tracing::debug!("fetching new scrobble data");
-                let latest = self.fetch_scrobble().await?;
-                *last_scrobble = Some(Scrobble {
-                    data: latest.clone(),
+                let scrobble = self.fetch_scrobble().await?;
+                let scrobble_partial = self.scrobble_partial(&scrobble);
+                *last_scrobble = Some(CachedScrobble {
+                    data: scrobble_partial.clone(),
                     fetch_time: Instant::now(),
                 });
-                Ok(latest)
+                Ok(scrobble_partial)
             }
         }
     }
 
-    async fn fetch_scrobble(&self) -> anyhow::Result<String> {
+    async fn fetch_scrobble(&self) -> anyhow::Result<Scrobble> {
         let response = self
             .client
             .get("https://ws.audioscrobbler.com/2.0")
@@ -71,6 +112,41 @@ impl ScrobbleMonitor {
             ])
             .send()
             .await?;
-        Ok(response.text().await?)
+        Ok(response.json().await?)
+    }
+
+    fn scrobble_partial(&self, scrobble: &Scrobble) -> Markup {
+        let latest_track = &scrobble.recent_tracks.track[0];
+        let srcset = format!(
+            "{}, {} 2x, {} 3x",
+            latest_track.image[0].text, latest_track.image[1].text, latest_track.image[2].text
+        );
+        let text_intro = if latest_track
+            .attributes
+            .as_ref()
+            .map_or(false, |attr| attr.now_playing)
+        {
+            "Now playing: "
+        } else {
+            "Last played: "
+        };
+        let now_playing = format!("{} - {}", latest_track.name, latest_track.artist.text);
+
+        html! {
+            .bar-container {
+                img .bar-cover
+                    src=(latest_track.image[0].text)
+                    alt="Cover art"
+                    srcset=(srcset);
+
+                p .bar-text-intro {
+                    (text_intro)
+                }
+
+                p .bar-text-music {
+                    (now_playing)
+                }
+            }
+        }
     }
 }

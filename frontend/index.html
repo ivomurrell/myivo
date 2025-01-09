@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>Ivo's Bio</title>
@@ -86,10 +86,10 @@
         />
       </div>
     </div>
-    <div class="scrobble-bar">
-      <div class="bar-container" id="bar-container">
-        <p class="bar-text-intro" id="scrobblar-prefix"></p>
-      </div>
-    </div>
+    <div
+      class="scrobble-bar"
+      hx-get="/scrobbles"
+      hx-trigger="load, every 30s"
+    />
   </body>
 </html>

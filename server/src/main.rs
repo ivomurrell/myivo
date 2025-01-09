@@ -23,7 +23,7 @@ async fn main() -> anyhow::Result<()> {
     let monitor = ScrobbleMonitor::new(env::var("LAST_FM_API_KEY")?);
 
     let app = Router::new()
-        .route("/scrobbles.json", get(get_scrobble))
+        .route("/scrobbles", get(get_scrobble))
         .fallback(get_service(ServeDir::new(".")))
         .layer(
             ServiceBuilder::new()
@@ -46,7 +46,7 @@ async fn main() -> anyhow::Result<()> {
 
 async fn get_scrobble(Extension(mut monitor): Extension<ScrobbleMonitor>) -> impl IntoResponse {
     monitor.get_scrobble().await.map_err(|err| {
-        tracing::error!("failed to get data from last.fm: {err}");
+        tracing::error!("failed to get data from last.fm: {err:?}");
         StatusCode::BAD_GATEWAY
     })
 }
