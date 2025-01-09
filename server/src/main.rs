@@ -24,7 +24,7 @@ async fn main() -> anyhow::Result<()> {
 
     let app = Router::new()
         .route("/scrobbles.json", get(get_scrobble))
-        .fallback(get_service(ServeDir::new(".")).handle_error(handle_serve_error))
+        .fallback(get_service(ServeDir::new(".")))
         .layer(
             ServiceBuilder::new()
                 .layer(TraceLayer::new_for_http())
