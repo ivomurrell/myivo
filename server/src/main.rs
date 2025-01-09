@@ -1,6 +1,6 @@
 mod scrobble_monitor;
 
-use std::{env, io, net::SocketAddr};
+use std::{env, net::SocketAddr};
 
 use crate::scrobble_monitor::ScrobbleMonitor;
 
@@ -38,18 +38,10 @@ async fn main() -> anyhow::Result<()> {
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 8080));
     tracing::debug!("starting server on {addr}");
-    axum::Server::bind(&addr)
-        .serve(app.into_make_service())
-        .await?;
+    let listener = tokio::net::TcpListener::bind(addr).await?;
+    axum::serve(listener, app).await?;
 
     Ok(())
-}
-
-async fn handle_serve_error(error: io::Error) -> impl IntoResponse {
-    (
-        StatusCode::INTERNAL_SERVER_ERROR,
-        format!("Unhandled internal error: {error}"),
-    )
 }
 
 async fn get_scrobble(Extension(mut monitor): Extension<ScrobbleMonitor>) -> impl IntoResponse {
