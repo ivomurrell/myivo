@@ -23,7 +23,7 @@ renderer.setPixelRatio(ratio);
 renderer.setClearColor(0xffffff);
 
 const fLoader = new FontLoader();
-let text: THREE.Mesh;
+let text: Mesh;
 fLoader.load("fonts/helvetiker_regular.typeface.json", (font) => {
   const geometry = new TextGeometry("Ivo", {
     size: 5,

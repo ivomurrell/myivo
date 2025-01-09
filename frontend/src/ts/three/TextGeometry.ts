@@ -34,6 +34,8 @@ export interface TextGeometryParameters {
 }
 
 class TextGeometry extends ExtrudeGeometry {
+  override type = "TextGeometry";
+
   constructor(text: string, parameters: TextGeometryParameters = { size: 1 }) {
     const font = parameters.font;
 
@@ -57,8 +59,6 @@ class TextGeometry extends ExtrudeGeometry {
 
       super(shapes, parameters);
     }
-
-    this.type = "TextGeometry";
   }
 }
 

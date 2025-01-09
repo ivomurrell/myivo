@@ -14,7 +14,7 @@ class FontLoader extends Loader {
     url: string,
     onLoad?: (responseFont: Font) => void,
     onProgress?: (event: ProgressEvent) => void,
-    onError?: (event: ErrorEvent) => void
+    onError?: (event: unknown) => void,
   ) {
     const loader = new FileLoader(this.manager);
     loader.setPath(this.path);
@@ -30,7 +30,7 @@ class FontLoader extends Loader {
           json = JSON.parse(text);
         } catch {
           console.warn(
-            "THREE.FontLoader: typeface.js support is being deprecated. Use typeface.json instead."
+            "THREE.FontLoader: typeface.js support is being deprecated. Use typeface.json instead.",
           );
           json = JSON.parse(text.substring(65, text.length - 2));
         }
@@ -40,7 +40,7 @@ class FontLoader extends Loader {
         if (onLoad) onLoad(font);
       },
       onProgress,
-      onError
+      onError,
     );
   }
 
@@ -107,7 +107,7 @@ function createPath(
   scale: number,
   offsetX: number,
   offsetY: number,
-  data: any
+  data: any,
 ) {
   const glyph = data.glyphs[char] || data.glyphs["?"];
 
@@ -117,7 +117,7 @@ function createPath(
         char +
         '" does not exists in font family ' +
         data.familyName +
-        "."
+        ".",
     );
   }
 
