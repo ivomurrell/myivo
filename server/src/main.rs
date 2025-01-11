@@ -1,3 +1,4 @@
+mod scrobble;
 mod scrobble_monitor;
 
 use std::{env, net::SocketAddr};

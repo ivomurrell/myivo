@@ -3,53 +3,16 @@ use std::{
     time::{Duration, Instant},
 };
 
-use maud::{html, Markup};
+use maud::Markup;
 use reqwest::Client;
-use serde::Deserialize;
 use tokio::sync::RwLock;
+
+use crate::scrobble::{scrobble_partial, Scrobble};
 
 #[derive(Debug, Clone)]
 struct CachedScrobble {
     data: Markup,
     fetch_time: Instant,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-struct ScrobbleArtist {
-    #[serde(rename = "#text")]
-    text: String,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-struct ScrobbleImage {
-    #[serde(rename = "#text")]
-    text: String,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-struct ScrobbleAttributes {
-    #[serde(rename = "nowplaying")]
-    now_playing: bool,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-struct ScrobbleTrack {
-    artist: ScrobbleArtist,
-    image: Vec<ScrobbleImage>,
-    name: String,
-    #[serde(rename = "@attr")]
-    attributes: Option<ScrobbleAttributes>,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-struct ScrobbleRecentTracks {
-    track: Vec<ScrobbleTrack>,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-struct Scrobble {
-    #[serde(rename = "recenttracks")]
-    recent_tracks: ScrobbleRecentTracks,
 }
 
 #[derive(Debug, Clone)]
@@ -89,7 +52,7 @@ impl ScrobbleMonitor {
             _ => {
                 tracing::debug!("fetching new scrobble data");
                 let scrobble = self.fetch_scrobble().await?;
-                let scrobble_partial = self.scrobble_partial(&scrobble);
+                let scrobble_partial = scrobble_partial(&scrobble);
                 *last_scrobble = Some(CachedScrobble {
                     data: scrobble_partial.clone(),
                     fetch_time: Instant::now(),
@@ -113,40 +76,5 @@ impl ScrobbleMonitor {
             .send()
             .await?;
         Ok(response.json().await?)
-    }
-
-    fn scrobble_partial(&self, scrobble: &Scrobble) -> Markup {
-        let latest_track = &scrobble.recent_tracks.track[0];
-        let srcset = format!(
-            "{}, {} 2x, {} 3x",
-            latest_track.image[0].text, latest_track.image[1].text, latest_track.image[2].text
-        );
-        let text_intro = if latest_track
-            .attributes
-            .as_ref()
-            .map_or(false, |attr| attr.now_playing)
-        {
-            "Now playing: "
-        } else {
-            "Last played: "
-        };
-        let now_playing = format!("{} - {}", latest_track.name, latest_track.artist.text);
-
-        html! {
-            .bar-container {
-                img .bar-cover
-                    src=(latest_track.image[0].text)
-                    alt="Cover art"
-                    srcset=(srcset);
-
-                p .bar-text-intro {
-                    (text_intro)
-                }
-
-                p .bar-text-music {
-                    (now_playing)
-                }
-            }
-        }
     }
 }
