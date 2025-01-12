@@ -86,10 +86,8 @@
         />
       </div>
     </div>
-    <div
-      class="scrobble-bar"
-      hx-get="/scrobbles"
-      hx-trigger="load, every 30s"
-    />
+    <div class="scrobble-bar" hx-get="/scrobbles" hx-trigger="every 30s">
+      {{scrobbles}}
+    </div>
   </body>
 </html>

@@ -43,7 +43,7 @@ if (argv.prod) {
         headers: req.headers,
       };
       const route =
-        req.url === "/scrobbles"
+        req.url === "/" || req.url === "/scrobbles"
           ? { hostname: "127.0.0.1", port: 8080 }
           : { hostname: host, port };
       const routedOptions = { ...options, ...route };

@@ -1,13 +1,15 @@
+mod index;
 mod scrobble;
 mod scrobble_monitor;
 
 use std::{env, net::SocketAddr};
 
+use crate::index::render_index;
 use crate::scrobble_monitor::ScrobbleMonitor;
 
 use axum::{
     http::{HeaderName, HeaderValue, StatusCode},
-    response::IntoResponse,
+    response::{Html, IntoResponse},
     routing::{get, get_service},
     Extension, Router,
 };
@@ -24,6 +26,7 @@ async fn main() -> anyhow::Result<()> {
     let monitor = ScrobbleMonitor::new(env::var("LAST_FM_API_KEY")?);
 
     let app = Router::new()
+        .route("/", get(render_index_handler))
         .route("/scrobbles", get(get_scrobble))
         .fallback(get_service(ServeDir::new(".")))
         .layer(
@@ -43,6 +46,15 @@ async fn main() -> anyhow::Result<()> {
     axum::serve(listener, app).await?;
 
     Ok(())
+}
+
+async fn render_index_handler(
+    Extension(mut monitor): Extension<ScrobbleMonitor>,
+) -> impl IntoResponse {
+    render_index(&mut monitor).await.map(Html).map_err(|err| {
+        tracing::error!("failed to get data from last.fm: {err:?}");
+        StatusCode::BAD_GATEWAY
+    })
 }
 
 async fn get_scrobble(Extension(mut monitor): Extension<ScrobbleMonitor>) -> impl IntoResponse {

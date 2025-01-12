@@ -13,6 +13,8 @@ FROM rust:1.83 AS builder-rs
 WORKDIR /usr/src/myivo-server
 COPY server .
 
+# point to minimised, production versions of build artefacts
+RUN sed -i "s|build/app|build/app.min|g" files/index.html
 RUN cargo install --profile release --locked --path .
 
 # run on different image
@@ -24,9 +26,6 @@ RUN apt-get update \
 
 WORKDIR /root
 
-COPY --from=build-js /usr/src/myivo/index.html ./
-# point to minimised, production versions of build artefacts
-RUN sed -i "s|build/app|build/app.min|g" index.html
 COPY --from=build-js /usr/src/myivo/images ./images 
 COPY --from=build-js /usr/src/myivo/fonts ./fonts
 COPY --from=build-js /usr/src/myivo/build ./build
