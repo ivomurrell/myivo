@@ -3,15 +3,14 @@ use std::{
     time::{Duration, Instant},
 };
 
-use maud::Markup;
 use reqwest::Client;
 use tokio::sync::RwLock;
 
-use crate::scrobble::{scrobble_partial, Scrobble};
+use crate::scrobble::{scrobble_partial, Scrobble, ScrobblesTemplate};
 
 #[derive(Debug, Clone)]
 struct CachedScrobble {
-    data: Markup,
+    data: ScrobblesTemplate,
     fetch_time: Instant,
 }
 
@@ -31,7 +30,7 @@ impl ScrobbleMonitor {
         }
     }
 
-    pub async fn get_scrobble(&mut self) -> anyhow::Result<Markup> {
+    pub async fn get_scrobble(&mut self) -> anyhow::Result<ScrobblesTemplate> {
         let is_fresh = |fetch_time: &Instant| fetch_time.elapsed() < Duration::from_secs(30);
 
         if let Some(scrobble) = &*self.last_scrobble.read().await {

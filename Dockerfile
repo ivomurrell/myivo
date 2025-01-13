@@ -14,7 +14,7 @@ WORKDIR /usr/src/myivo-server
 COPY server .
 
 # point to minimised, production versions of build artefacts
-RUN sed -i "s|build/app|build/app.min|g" files/index.html
+RUN sed -i "s|build/app|build/app.min|g" templates/index.html
 RUN cargo install --profile release --locked --path .
 
 # run on different image

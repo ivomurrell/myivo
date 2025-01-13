@@ -87,7 +87,18 @@
       </div>
     </div>
     <div class="scrobble-bar" hx-get="/scrobbles" hx-trigger="every 30s">
-      {{scrobbles}}
+      {% block scrobbles %}
+      <div class="bar-container">
+        <img
+          class="bar-cover"
+          src="{{ image }}"
+          alt="Cover art"
+          srcset="{{ srcset }}"
+        />
+        <p class="bar-text-intro">{{ intro }}</p>
+        <p class="bar-text-music">{{ now_playing }}</p>
+      </div>
+      {% endblock scrobbles %}
     </div>
   </body>
 </html>

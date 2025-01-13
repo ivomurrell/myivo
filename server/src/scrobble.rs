@@ -1,4 +1,4 @@
-use maud::{html, Markup};
+use askama::Template;
 use serde::Deserialize;
 
 #[derive(Debug, Clone, Deserialize)]
@@ -39,7 +39,16 @@ pub struct Scrobble {
     pub recent_tracks: ScrobbleRecentTracks,
 }
 
-pub fn scrobble_partial(scrobble: &Scrobble) -> Markup {
+#[derive(Template, Debug, Clone)]
+#[template(path = "index.html", block = "scrobbles")]
+pub struct ScrobblesTemplate {
+    pub intro: String,
+    pub now_playing: String,
+    pub image: String,
+    pub srcset: String,
+}
+
+pub fn scrobble_partial(scrobble: &Scrobble) -> ScrobblesTemplate {
     let latest_track = &scrobble.recent_tracks.track[0];
     let srcset = format!(
         "{}, {} 2x, {} 3x",
@@ -56,20 +65,10 @@ pub fn scrobble_partial(scrobble: &Scrobble) -> Markup {
     };
     let now_playing = format!("{} - {}", latest_track.name, latest_track.artist.text);
 
-    html! {
-        .bar-container {
-            img .bar-cover
-                src=(latest_track.image[0].text)
-                alt="Cover art"
-                srcset=(srcset);
-
-            p .bar-text-intro {
-                (text_intro)
-            }
-
-            p .bar-text-music {
-                (now_playing)
-            }
-        }
+    ScrobblesTemplate {
+        intro: text_intro.to_owned(),
+        now_playing,
+        image: latest_track.image[0].text.clone(),
+        srcset,
     }
 }

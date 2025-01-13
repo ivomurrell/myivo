@@ -4,9 +4,10 @@ mod scrobble_monitor;
 
 use std::{env, net::SocketAddr};
 
-use crate::index::render_index;
+use crate::index::get_index;
 use crate::scrobble_monitor::ScrobbleMonitor;
 
+use askama::Template;
 use axum::{
     http::{HeaderName, HeaderValue, StatusCode},
     response::{Html, IntoResponse},
@@ -51,15 +52,23 @@ async fn main() -> anyhow::Result<()> {
 async fn render_index_handler(
     Extension(mut monitor): Extension<ScrobbleMonitor>,
 ) -> impl IntoResponse {
-    render_index(&mut monitor).await.map(Html).map_err(|err| {
+    let template = get_index(&mut monitor).await.map_err(|err| {
         tracing::error!("failed to get data from last.fm: {err:?}");
         StatusCode::BAD_GATEWAY
+    })?;
+    template.render().map(Html).map_err(|err| {
+        tracing::error!("failed to render index: {err:?}");
+        StatusCode::INTERNAL_SERVER_ERROR
     })
 }
 
 async fn get_scrobble(Extension(mut monitor): Extension<ScrobbleMonitor>) -> impl IntoResponse {
-    monitor.get_scrobble().await.map_err(|err| {
+    let template = monitor.get_scrobble().await.map_err(|err| {
         tracing::error!("failed to get data from last.fm: {err:?}");
         StatusCode::BAD_GATEWAY
+    })?;
+    template.render().map(Html).map_err(|err| {
+        tracing::error!("failed to render scrobble: {err:?}");
+        StatusCode::INTERNAL_SERVER_ERROR
     })
 }
