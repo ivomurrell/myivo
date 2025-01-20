@@ -2,18 +2,21 @@ mod index;
 mod scrobble;
 mod scrobble_monitor;
 
-use std::{env, net::SocketAddr};
+use std::{convert::Infallible, env, net::SocketAddr, time::Duration};
 
 use crate::index::get_index;
 use crate::scrobble_monitor::ScrobbleMonitor;
 
 use askama::Template;
+use async_stream::stream;
 use axum::{
     http::{HeaderName, HeaderValue, StatusCode},
-    response::{Html, IntoResponse},
+    response::{sse, Html, IntoResponse, Sse},
     routing::{get, get_service},
     Extension, Router,
 };
+use tokio::time::{self, MissedTickBehavior};
+use tokio_stream::Stream;
 use tower::ServiceBuilder;
 use tower_http::{
     compression::CompressionLayer, services::ServeDir, set_header::SetResponseHeaderLayer,
@@ -57,13 +60,32 @@ async fn render_index_handler(Extension(monitor): Extension<ScrobbleMonitor>) ->
     })
 }
 
-async fn get_scrobble(Extension(mut monitor): Extension<ScrobbleMonitor>) -> impl IntoResponse {
-    let template = monitor.get_scrobble().await.map_err(|err| {
-        tracing::error!("failed to get data from last.fm: {err:?}");
-        StatusCode::BAD_GATEWAY
-    })?;
-    template.render().map(Html).map_err(|err| {
-        tracing::error!("failed to render scrobble: {err:?}");
-        StatusCode::INTERNAL_SERVER_ERROR
-    })
+async fn get_scrobble(
+    Extension(mut monitor): Extension<ScrobbleMonitor>,
+) -> Sse<impl Stream<Item = Result<sse::Event, Infallible>>> {
+    let stream = stream! {
+        let mut interval = time::interval(Duration::from_secs(30));
+        interval.set_missed_tick_behavior(MissedTickBehavior::Skip);
+        interval.tick().await;
+        loop {
+            interval.tick().await;
+            let template = match monitor.get_scrobble().await {
+                Ok(template) => template,
+                Err(err) => {
+                    tracing::error!("failed to get data from last.fm: {err:?}");
+                    continue;
+                }
+            };
+            let data = match template.render() {
+                Ok(data) => data,
+                Err(err) => {
+                    tracing::error!("failed to render scrobble: {err:?}");
+                    break;
+                }
+            };
+            yield Ok(sse::Event::default().event("scrobble").data(data));
+        }
+    };
+
+    Sse::new(stream)
 }

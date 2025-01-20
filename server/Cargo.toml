@@ -8,10 +8,12 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.57"
 askama = { version = "0.13.0", git="https://github.com/rinja-rs/askama.git" }
+async-stream = "0.3.6"
 axum = "0.8.1"
 reqwest = { version = "0.12.12", features = ["json"] }
 serde = { version = "1.0.217", features = ["derive"] }
 tokio = { version = "1.18.2", features = ["full"] }
+tokio-stream = "0.1.17"
 tower = "0.5.2"
 tower-http = { version = "0.6.2", features = ["compression-full", "fs", "trace", "set-header"] }
 tracing = "0.1.34"
