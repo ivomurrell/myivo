@@ -96,10 +96,10 @@
           "load, every 30s"
         {%- endif -%}
       >
-      {% match scrobble %} {% when Some with (ScrobblesTemplate {intro, now_playing, image, srcset}) %}
+      {%- match scrobble %} {%- when Some with (ScrobblesTemplate {intro, now_playing, image, srcset}) %}
       {% include "scrobble.html" %}
-      {% else %}
-      {% endmatch %}
+      {%- else %}
+      {%- endmatch %}
     </div>
   </body>
 </html>
