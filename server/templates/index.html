@@ -86,7 +86,16 @@
         />
       </div>
     </div>
-    <div class="scrobble-bar" hx-get="/scrobbles" hx-trigger="every 30s">
+    <div
+      class="scrobble-bar"
+      hx-get="/scrobbles"
+      hx-trigger=
+        {%- if let Some(_) = scrobble -%}
+          "every 30s"
+        {%- else -%}
+          "load, every 30s"
+        {%- endif -%}
+      >
       {% match scrobble %} {% when Some with (ScrobblesTemplate {intro, now_playing, image, srcset}) %}
       {% include "scrobble.html" %}
       {% else %}

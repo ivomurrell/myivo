@@ -49,10 +49,8 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-async fn render_index_handler(
-    Extension(mut monitor): Extension<ScrobbleMonitor>,
-) -> impl IntoResponse {
-    let template = get_index(&mut monitor).await;
+async fn render_index_handler(Extension(monitor): Extension<ScrobbleMonitor>) -> impl IntoResponse {
+    let template = get_index(monitor).await;
     template.render().map(Html).map_err(|err| {
         tracing::error!("failed to render index: {err:?}");
         StatusCode::INTERNAL_SERVER_ERROR
