@@ -1,23 +1,20 @@
-use crate::scrobble_monitor::ScrobbleMonitor;
+use crate::{scrobble::ScrobblesTemplate, scrobble_monitor::ScrobbleMonitor};
 
 use askama::Template;
 
 #[derive(Template, Debug, Clone)]
 #[template(path = "index.html")]
 pub struct RootTemplate {
-    intro: String,
-    now_playing: String,
-    image: String,
-    srcset: String,
+    scrobble: Option<ScrobblesTemplate>
 }
 
-pub async fn get_index(monitor: &mut ScrobbleMonitor) -> anyhow::Result<RootTemplate> {
-    let scrobbles_template = monitor.get_scrobble().await?;
+pub async fn get_index(monitor: &mut ScrobbleMonitor) -> RootTemplate {
+    let scrobbles_template = monitor.get_scrobble().await;
+    if let Err(err) = scrobbles_template.as_ref() {
+        tracing::warn!(?err, "Failed to get scrobble");
+    }
 
-    Ok(RootTemplate {
-        intro: scrobbles_template.intro,
-        now_playing: scrobbles_template.now_playing,
-        image: scrobbles_template.image,
-        srcset: scrobbles_template.srcset,
-    })
+    RootTemplate {
+        scrobble: scrobbles_template.ok()
+    }
 }

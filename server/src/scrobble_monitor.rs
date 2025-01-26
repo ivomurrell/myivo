@@ -51,7 +51,7 @@ impl ScrobbleMonitor {
             _ => {
                 tracing::debug!("fetching new scrobble data");
                 let scrobble = self.fetch_scrobble().await?;
-                let scrobble_partial = scrobble_partial(&scrobble);
+                let scrobble_partial = scrobble_partial(scrobble);
                 *last_scrobble = Some(CachedScrobble {
                     data: scrobble_partial.clone(),
                     fetch_time: Instant::now(),

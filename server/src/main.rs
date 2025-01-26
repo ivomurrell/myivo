@@ -52,10 +52,7 @@ async fn main() -> anyhow::Result<()> {
 async fn render_index_handler(
     Extension(mut monitor): Extension<ScrobbleMonitor>,
 ) -> impl IntoResponse {
-    let template = get_index(&mut monitor).await.map_err(|err| {
-        tracing::error!("failed to get data from last.fm: {err:?}");
-        StatusCode::BAD_GATEWAY
-    })?;
+    let template = get_index(&mut monitor).await;
     template.render().map(Html).map_err(|err| {
         tracing::error!("failed to render index: {err:?}");
         StatusCode::INTERNAL_SERVER_ERROR

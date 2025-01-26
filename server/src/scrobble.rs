@@ -30,7 +30,7 @@ pub struct ScrobbleTrack {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct ScrobbleRecentTracks {
-    pub track: Vec<ScrobbleTrack>,
+    pub track: (ScrobbleTrack,),
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -42,21 +42,22 @@ pub struct Scrobble {
 #[derive(Template, Debug, Clone)]
 #[template(path = "index.html", block = "scrobbles")]
 pub struct ScrobblesTemplate {
-    pub intro: String,
+    pub intro: &'static str,
     pub now_playing: String,
-    pub image: String,
-    pub srcset: String,
+    pub image: Option<String>,
+    pub srcset: Option<String>,
 }
 
-pub fn scrobble_partial(scrobble: &Scrobble) -> ScrobblesTemplate {
-    let latest_track = &scrobble.recent_tracks.track[0];
-    let srcset = format!(
-        "{}, {} 2x, {} 3x",
-        latest_track.image[0].text, latest_track.image[1].text, latest_track.image[2].text
-    );
+pub fn scrobble_partial(scrobble: Scrobble) -> ScrobblesTemplate {
+    let (latest_track,) = scrobble.recent_tracks.track;
+    let srcset = latest_track.image.get(0..3).map(|images| {
+        format!(
+            "{}, {} 2x, {} 3x",
+            images[0].text, images[1].text, images[2].text
+        )
+    });
     let text_intro = if latest_track
         .attributes
-        .as_ref()
         .map_or(false, |attr| attr.now_playing)
     {
         "Now playing: "
@@ -66,9 +67,13 @@ pub fn scrobble_partial(scrobble: &Scrobble) -> ScrobblesTemplate {
     let now_playing = format!("{} - {}", latest_track.name, latest_track.artist.text);
 
     ScrobblesTemplate {
-        intro: text_intro.to_owned(),
+        intro: text_intro,
         now_playing,
-        image: latest_track.image[0].text.clone(),
+        image: latest_track
+            .image
+            .into_iter()
+            .next()
+            .map(|image| image.text),
         srcset,
     }
 }
