@@ -1,0 +1,16 @@
+<div class="bar-container">
+  {% match image %} {% when Some with (image) %}
+  <img
+  class="bar-cover"
+  src="{{ image }}"
+  alt="Cover art"
+  {% match srcset %} {% when Some with (srcset) %}
+  srcset="{{ srcset }}"
+  {% else %}
+  {% endmatch %}
+  />
+  {% else %}
+  {% endmatch %}
+  <p class="bar-text-intro">{{ intro }}</p>
+  <p class="bar-text-music">{{ now_playing }}</p>
+</div>

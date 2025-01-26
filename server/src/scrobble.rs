@@ -40,7 +40,7 @@ pub struct Scrobble {
 }
 
 #[derive(Template, Debug, Clone)]
-#[template(path = "index.html", block = "scrobbles")]
+#[template(path = "scrobble.html")]
 pub struct ScrobblesTemplate {
     pub intro: &'static str,
     pub now_playing: String,
