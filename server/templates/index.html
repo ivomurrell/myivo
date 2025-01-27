@@ -89,7 +89,7 @@
     <div
       class="scrobble-bar"
       hx-ext="sse"
-      sse-connect="/scrobbles"
+      sse-connect="/scrobbles{% if scrobble.is_none() %}?immediate=true{% endif %}"
       sse-swap="scrobble"
       >
       {%- match scrobble %} {%- when Some with (ScrobblesTemplate {intro, now_playing, image, srcset}) %}

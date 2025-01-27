@@ -42,8 +42,9 @@ if (argv.prod) {
         method: req.method,
         headers: req.headers,
       };
+      const url = new URL(`http://localhost${req.url}`);
       const route =
-        req.url === "/" || req.url === "/scrobbles"
+        url.pathname === "/" || url.pathname === "/scrobbles"
           ? { hostname: "127.0.0.1", port: 8080 }
           : { hostname: host, port };
       const routedOptions = { ...options, ...route };

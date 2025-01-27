@@ -10,11 +10,13 @@ use crate::scrobble_monitor::ScrobbleMonitor;
 use askama::Template;
 use async_stream::stream;
 use axum::{
+    extract::Query,
     http::{HeaderName, HeaderValue, StatusCode},
     response::{sse, Html, IntoResponse, Sse},
     routing::{get, get_service},
     Extension, Router,
 };
+use serde::Deserialize;
 use tokio::time::{self, MissedTickBehavior};
 use tokio_stream::Stream;
 use tower::ServiceBuilder;
@@ -60,13 +62,22 @@ async fn render_index_handler(Extension(monitor): Extension<ScrobbleMonitor>) ->
     })
 }
 
+#[derive(Deserialize)]
+struct ScrobbleQuery {
+    #[serde(default)]
+    immediate: bool,
+}
+
 async fn get_scrobble(
     Extension(mut monitor): Extension<ScrobbleMonitor>,
+    Query(ScrobbleQuery { immediate }): Query<ScrobbleQuery>,
 ) -> Sse<impl Stream<Item = Result<sse::Event, Infallible>>> {
     let stream = stream! {
         let mut interval = time::interval(Duration::from_secs(30));
         interval.set_missed_tick_behavior(MissedTickBehavior::Skip);
-        interval.tick().await;
+        if !immediate {
+            interval.tick().await;
+        }
         loop {
             interval.tick().await;
             let template = match monitor.get_scrobble().await {
