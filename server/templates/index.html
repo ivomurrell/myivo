@@ -92,10 +92,9 @@
       sse-connect="/scrobbles{% if scrobble.is_none() %}?immediate=true{% endif %}"
       sse-swap="scrobble"
       >
-      {%- match scrobble %} {%- when Some with (ScrobblesTemplate {intro, now_playing, image, srcset}) %}
+      {%- if let Some(ScrobblesTemplate {intro, now_playing, image, srcset}) = scrobble %}
       {% include "scrobble.html" %}
-      {%- else %}
-      {%- endmatch %}
+      {%- endif %}
     </div>
   </body>
 </html>
