@@ -10,11 +10,11 @@ use crate::scrobble_monitor::ScrobbleMonitor;
 use askama::Template;
 use async_stream::stream;
 use axum::{
-    extract::Query,
+    extract::{Query, State},
     http::{HeaderName, HeaderValue, StatusCode},
     response::{sse, Html, IntoResponse, Sse},
     routing::{get, get_service},
-    Extension, Router,
+    Router,
 };
 use serde::Deserialize;
 use tokio::time::{self, MissedTickBehavior};
@@ -35,11 +35,11 @@ async fn main() -> anyhow::Result<()> {
         .route("/", get(render_index_handler))
         .route("/scrobbles", get(get_scrobble))
         .fallback(get_service(ServeDir::new(".")))
+        .with_state(monitor)
         .layer(
             ServiceBuilder::new()
                 .layer(TraceLayer::new_for_http())
                 .layer(CompressionLayer::new())
-                .layer(Extension(monitor))
                 .layer(SetResponseHeaderLayer::overriding(
                     HeaderName::from_static("strict-transport-security"),
                     HeaderValue::from_static("max-age=300; includeSubDomains"),
@@ -54,7 +54,7 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-async fn render_index_handler(Extension(monitor): Extension<ScrobbleMonitor>) -> impl IntoResponse {
+async fn render_index_handler(State(monitor): State<ScrobbleMonitor>) -> impl IntoResponse {
     let template = get_index(monitor).await;
     template.render().map(Html).map_err(|err| {
         tracing::error!("failed to render index: {err:?}");
@@ -69,7 +69,7 @@ struct ScrobbleQuery {
 }
 
 async fn get_scrobble(
-    Extension(mut monitor): Extension<ScrobbleMonitor>,
+    State(mut monitor): State<ScrobbleMonitor>,
     Query(ScrobbleQuery { immediate }): Query<ScrobbleQuery>,
 ) -> Sse<impl Stream<Item = Result<sse::Event, Infallible>>> {
     let stream = stream! {
