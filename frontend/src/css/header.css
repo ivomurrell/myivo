@@ -29,8 +29,7 @@
   --logo-aspect-ratio: 2.5;
 
   height: 100%;
-  margin: auto;
-  padding-right: 3%;
+  margin-right: 3%;
   width: calc(var(--header-viewport-proportion) * var(--logo-aspect-ratio));
 
   @media screen and (max-height: 500px) {

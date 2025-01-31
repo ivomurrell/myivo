@@ -35,9 +35,9 @@
     "url": "https://github.com/ivomurrell/myivo.git"
   },
   "dependencies": {
-    "htmx.org": "^2.0.4",
     "htmx-ext-sse": "^2.2.2",
-    "normalize.css": "^8.0.1",
+    "htmx.org": "^2.0.4",
+    "modern-normalize": "^3.0.1",
     "three": "^0.172.0"
   },
   "volta": {
