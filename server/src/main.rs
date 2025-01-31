@@ -73,21 +73,33 @@ async fn get_scrobble(
     Query(ScrobbleQuery { immediate }): Query<ScrobbleQuery>,
 ) -> Sse<impl Stream<Item = Result<sse::Event, Infallible>>> {
     let stream = stream! {
+        let mut last_template = None;
+
         let mut interval = time::interval(Duration::from_secs(30));
         interval.set_missed_tick_behavior(MissedTickBehavior::Skip);
         if !immediate {
             interval.tick().await;
+            last_template = monitor.get_scrobble().await.ok();
         }
+
         loop {
             interval.tick().await;
-            let template = match monitor.get_scrobble().await {
+            let new_template = match monitor.get_scrobble().await {
                 Ok(template) => template,
                 Err(err) => {
                     tracing::error!("failed to get data from last.fm: {err:?}");
                     continue;
                 }
             };
-            let data = match template.render() {
+
+            if last_template
+                .as_ref()
+                .is_some_and(|last_template| last_template == &new_template)
+            {
+                continue;
+            }
+
+            let data = match new_template.render() {
                 Ok(data) => data,
                 Err(err) => {
                     tracing::error!("failed to render scrobble: {err:?}");
@@ -95,6 +107,8 @@ async fn get_scrobble(
                 }
             };
             yield Ok(sse::Event::default().event("scrobble").data(data));
+
+            last_template.replace(new_template);
         }
     };
 

@@ -39,7 +39,7 @@ pub struct Scrobble {
     pub recent_tracks: ScrobbleRecentTracks,
 }
 
-#[derive(Template, Debug, Clone)]
+#[derive(Template, Debug, Clone, PartialEq)]
 #[template(path = "scrobble.html")]
 pub struct ScrobblesTemplate {
     pub intro: &'static str,
