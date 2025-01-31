@@ -42,7 +42,7 @@ async fn main() -> anyhow::Result<()> {
                 .layer(CompressionLayer::new())
                 .layer(SetResponseHeaderLayer::overriding(
                     HeaderName::from_static("strict-transport-security"),
-                    HeaderValue::from_static("max-age=300; includeSubDomains"),
+                    HeaderValue::from_static("max-age=2592000; includeSubDomains"),
                 )),
         );
 
