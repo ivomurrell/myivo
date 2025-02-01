@@ -16,7 +16,7 @@ pub struct ScrobbleImage {
 #[derive(Debug, Clone, Deserialize)]
 pub struct ScrobbleAttributes {
     #[serde(rename = "nowplaying")]
-    pub now_playing: bool,
+    pub now_playing: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -58,7 +58,7 @@ pub fn scrobble_partial(scrobble: Scrobble) -> ScrobblesTemplate {
     });
     let text_intro = if latest_track
         .attributes
-        .map_or(false, |attr| attr.now_playing)
+        .is_some_and(|attr| attr.now_playing == "true")
     {
         "Now playing: "
     } else {
