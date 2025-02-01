@@ -30,7 +30,7 @@ pub struct ScrobbleTrack {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct ScrobbleRecentTracks {
-    pub track: (ScrobbleTrack,),
+    pub track: Vec<ScrobbleTrack>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -49,7 +49,12 @@ pub struct ScrobblesTemplate {
 }
 
 pub fn scrobble_partial(scrobble: Scrobble) -> ScrobblesTemplate {
-    let (latest_track,) = scrobble.recent_tracks.track;
+    let latest_track = scrobble
+        .recent_tracks
+        .track
+        .into_iter()
+        .next()
+        .expect("no tracks were returned");
     let srcset = latest_track.image.get(0..3).map(|images| {
         format!(
             "{}, {} 2x, {} 3x",
