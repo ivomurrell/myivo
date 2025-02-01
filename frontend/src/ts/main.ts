@@ -4,5 +4,4 @@ import "../css/main.css";
 import "./htmx";
 import "htmx-ext-sse";
 
-import "./header";
 import "./logo";
