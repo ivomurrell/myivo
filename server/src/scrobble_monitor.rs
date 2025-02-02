@@ -6,7 +6,7 @@ use std::{
 use reqwest::Client;
 use tokio::sync::RwLock;
 
-use crate::scrobble::{scrobble_partial, Scrobble, ScrobblesTemplate};
+use crate::scrobble::{Scrobble, ScrobblesTemplate};
 
 #[derive(Debug, Clone)]
 struct CachedScrobble {
@@ -63,7 +63,7 @@ impl ScrobbleMonitor {
             _ => {
                 tracing::debug!("fetching new scrobble data");
                 let scrobble = self.fetch_scrobble().await?;
-                let scrobble_partial = scrobble_partial(scrobble);
+                let scrobble_partial = ScrobblesTemplate::new(scrobble);
                 *last_scrobble = Some(CachedScrobble {
                     data: scrobble_partial.clone(),
                     fetch_time: Instant::now(),

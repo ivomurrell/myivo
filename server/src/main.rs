@@ -4,7 +4,7 @@ mod scrobble_monitor;
 
 use std::{convert::Infallible, env, net::SocketAddr, time::Duration};
 
-use crate::index::get_index;
+use crate::index::RootTemplate;
 use crate::scrobble_monitor::ScrobbleMonitor;
 
 use askama::Template;
@@ -55,7 +55,7 @@ async fn main() -> anyhow::Result<()> {
 }
 
 async fn render_index_handler(State(monitor): State<ScrobbleMonitor>) -> impl IntoResponse {
-    let template = get_index(monitor).await;
+    let template = RootTemplate::new(monitor);
     template.render().map(Html).map_err(|err| {
         tracing::error!("failed to render index: {err:?}");
         StatusCode::INTERNAL_SERVER_ERROR
