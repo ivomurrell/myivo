@@ -14,6 +14,12 @@ struct CachedScrobble {
     fetch_time: Instant,
 }
 
+impl CachedScrobble {
+    fn is_fresh(&self) -> bool {
+        self.fetch_time.elapsed() < Duration::from_secs(30)
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct ScrobbleMonitor {
     client: Client,
@@ -30,11 +36,17 @@ impl ScrobbleMonitor {
         }
     }
 
-    pub async fn get_scrobble(&mut self) -> anyhow::Result<ScrobblesTemplate> {
-        let is_fresh = |fetch_time: &Instant| fetch_time.elapsed() < Duration::from_secs(30);
+    pub fn try_get_scrobble(&self) -> Option<ScrobblesTemplate> {
+        let scrobble = &*self.last_scrobble.try_read().ok()?;
+        scrobble
+            .as_ref()
+            .filter(|scrobble| scrobble.is_fresh())
+            .map(|scrobble| scrobble.data.clone())
+    }
 
+    pub async fn get_scrobble(&mut self) -> anyhow::Result<ScrobblesTemplate> {
         if let Some(scrobble) = &*self.last_scrobble.read().await {
-            if is_fresh(&scrobble.fetch_time) {
+            if scrobble.is_fresh() {
                 tracing::debug!("returning recently fetched scrobble data");
                 return Ok(scrobble.data.clone());
             }
@@ -44,7 +56,7 @@ impl ScrobbleMonitor {
         match &*last_scrobble {
             // make sure another task hasn't fetched the new data first after we
             // both waited for write access
-            Some(scrobble) if is_fresh(&scrobble.fetch_time) => {
+            Some(scrobble) if scrobble.is_fresh() => {
                 tracing::debug!("returning (very) recently fetched scrobble data");
                 Ok(scrobble.data.clone())
             }
