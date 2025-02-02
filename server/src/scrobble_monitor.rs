@@ -44,7 +44,7 @@ impl ScrobbleMonitor {
             .map(|scrobble| scrobble.data.clone())
     }
 
-    pub async fn get_scrobble(&mut self) -> anyhow::Result<ScrobblesTemplate> {
+    pub async fn get_scrobble(&self) -> anyhow::Result<ScrobblesTemplate> {
         if let Some(scrobble) = &*self.last_scrobble.read().await {
             if scrobble.is_fresh() {
                 tracing::debug!("returning recently fetched scrobble data");

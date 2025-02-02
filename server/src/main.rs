@@ -69,7 +69,7 @@ struct ScrobbleQuery {
 }
 
 async fn get_scrobble(
-    State(mut monitor): State<ScrobbleMonitor>,
+    State(monitor): State<ScrobbleMonitor>,
     Query(ScrobbleQuery { immediate }): Query<ScrobbleQuery>,
 ) -> Sse<impl Stream<Item = Result<sse::Event, Infallible>>> {
     let stream = stream! {

@@ -8,7 +8,7 @@ pub struct RootTemplate {
     scrobble: Option<ScrobblesTemplate>,
 }
 
-pub async fn get_index(mut monitor: ScrobbleMonitor) -> RootTemplate {
+pub async fn get_index(monitor: ScrobbleMonitor) -> RootTemplate {
     let scrobbles_template = monitor.try_get_scrobble();
     if scrobbles_template.is_none() {
         // start fetching scrobble so we can send a fresh response to the client ASAP
