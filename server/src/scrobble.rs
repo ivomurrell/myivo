@@ -49,13 +49,8 @@ pub struct ScrobblesTemplate {
 }
 
 impl ScrobblesTemplate {
-    pub fn new(scrobble: Scrobble) -> ScrobblesTemplate {
-        let latest_track = scrobble
-            .recent_tracks
-            .track
-            .into_iter()
-            .next()
-            .expect("no tracks were returned");
+    pub fn new(scrobble: &Scrobble) -> ScrobblesTemplate {
+        let latest_track = &scrobble.recent_tracks.track[0];
         let srcset = latest_track.image.get(0..3).map(|images| {
             format!(
                 "{}, {} 2x, {} 3x",
@@ -64,6 +59,7 @@ impl ScrobblesTemplate {
         });
         let text_intro = if latest_track
             .attributes
+            .as_ref()
             .is_some_and(|attr| attr.now_playing == "true")
         {
             "Now playing: "
@@ -75,11 +71,7 @@ impl ScrobblesTemplate {
         ScrobblesTemplate {
             intro: text_intro,
             now_playing,
-            image: latest_track
-                .image
-                .into_iter()
-                .next()
-                .map(|image| image.text),
+            image: latest_track.image.first().map(|image| image.text.clone()),
             srcset,
         }
     }
