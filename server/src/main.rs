@@ -86,8 +86,8 @@ async fn get_scrobble(
             interval.tick().await;
             let new_template = match monitor.get_scrobble().await {
                 Ok(template) => template,
-                Err(err) => {
-                    tracing::error!("failed to get data from last.fm: {err:?}");
+                Err(error) => {
+                    tracing::error!(?error, "failed to get data from last.fm");
                     continue;
                 }
             };
@@ -101,8 +101,8 @@ async fn get_scrobble(
 
             let data = match new_template.render() {
                 Ok(data) => data,
-                Err(err) => {
-                    tracing::error!("failed to render scrobble: {err:?}");
+                Err(error) => {
+                    tracing::error!(?error, "failed to render scrobble");
                     break;
                 }
             };

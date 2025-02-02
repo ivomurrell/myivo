@@ -3,10 +3,11 @@ use std::{
     time::{Duration, Instant},
 };
 
+use anyhow::anyhow;
 use reqwest::Client;
 use tokio::sync::RwLock;
 
-use crate::scrobble::{Scrobble, ScrobblesTemplate};
+use crate::scrobble::{Response, Scrobble, ScrobblesTemplate};
 
 #[derive(Debug, Clone)]
 struct CachedScrobble {
@@ -86,6 +87,12 @@ impl ScrobbleMonitor {
             ])
             .send()
             .await?;
-        Ok(response.json().await?)
+        let response: Response = response.json().await?;
+        match response {
+            Response::Scrobble(scrobble) => Ok(scrobble),
+            Response::Error(err) => {
+                Err(anyhow!("last.fm responded with an error: {}", err.message))
+            }
+        }
     }
 }

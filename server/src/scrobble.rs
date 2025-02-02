@@ -39,6 +39,18 @@ pub struct Scrobble {
     pub recent_tracks: RecentTracks,
 }
 
+#[derive(Debug, Clone, Deserialize)]
+pub struct Error {
+    pub message: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+#[serde(untagged)]
+pub enum Response {
+    Scrobble(Scrobble),
+    Error(Error),
+}
+
 #[derive(Template, Debug, Clone, PartialEq)]
 #[template(path = "scrobble.html")]
 pub struct ScrobblesTemplate {
