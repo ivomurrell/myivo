@@ -10,11 +10,11 @@ use crate::scrobble_monitor::ScrobbleMonitor;
 use askama::Template;
 use async_stream::stream;
 use axum::{
+    Router,
     extract::{Query, State},
     http::{HeaderName, HeaderValue, StatusCode},
-    response::{sse, Html, IntoResponse, Sse},
+    response::{Html, IntoResponse, Sse, sse},
     routing::{get, get_service},
-    Router,
 };
 use serde::Deserialize;
 use tokio::time::{self, MissedTickBehavior};
