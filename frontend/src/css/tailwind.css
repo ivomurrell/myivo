@@ -1,2 +1,37 @@
 @import "tailwindcss" source(none);
 @source "../../../server/templates";
+@source ".";
+
+@theme {
+  --animate-marquee: marquee-start 1s linear 2, marquee-end 1s 2s ease-out;
+  --animate-glow: glow 0.5s 3.12s backwards ease-in;
+
+  @keyframes marquee-start {
+    0% {
+      transform: translateX(-75vw);
+    }
+    100% {
+      transform: translateX(75vw);
+    }
+  }
+
+  @keyframes marquee-end {
+    0% {
+      transform: translateX(-75vw);
+    }
+    100% {
+    }
+  }
+
+  @keyframes glow {
+    0% {
+      color: var(--color-gray-200);
+    }
+    50% {
+      color: var(--color-pink-900);
+    }
+    100% {
+      color: var(--color-pink-700);
+    }
+  }
+}
