@@ -1,4 +1,4 @@
-FROM node:22 AS build-js
+FROM node:24 AS build-js
 
 WORKDIR /usr/src/myivo
 
@@ -13,7 +13,7 @@ RUN sed -i "s|../../../server/templates|../../templates|" src/css/tailwind.css
 
 RUN npm run build:production
 
-FROM rust:1.85 AS builder-rs
+FROM rust:1.89 AS builder-rs
 
 WORKDIR /usr/src/myivo-server
 COPY server .
@@ -23,7 +23,7 @@ RUN sed -i "s|build/app|build/app.min|g" templates/index.html
 RUN cargo install --profile release --locked --path .
 
 # run on different image
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 RUN apt-get update \
  && apt-get install -y openssl ca-certificates \

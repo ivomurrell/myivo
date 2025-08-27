@@ -37,7 +37,7 @@ if (argv.serve) {
   child_process.fork(tailwindBin, [...tailwindArgs, "-w"]);
 
   const context = await esbuild.context(devOptions);
-  const { host, port } = await context.serve({ servedir: "." });
+  const { hosts, port } = await context.serve({ servedir: "." });
 
   const proxyPort = 3000;
   console.log(`serving at http://localhost:${proxyPort}`);
@@ -52,7 +52,7 @@ if (argv.serve) {
       const route =
         url.pathname === "/" || url.pathname === "/scrobbles"
           ? { hostname: "127.0.0.1", port: 8080 }
-          : { hostname: host, port };
+          : { hostname: hosts[0], port };
       const routedOptions = { ...options, ...route };
 
       const proxyReq = http.request(routedOptions, (proxyRes) => {

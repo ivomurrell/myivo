@@ -7,7 +7,7 @@ edition = "2024"
 
 [dependencies]
 anyhow = "1.0.57"
-askama = { version = "0.13.0", git="https://github.com/rinja-rs/askama.git" }
+askama = "0.14.0"
 axum = "0.8.1"
 tokio = { version = "1.18.2", features = ["full"] }
 tower = "0.5.2"
