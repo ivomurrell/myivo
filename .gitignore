@@ -1,6 +1,7 @@
 node_modules
 /frontend/fonts
 /frontend/build
+/frontend/src/css/tailwind-out.css
 /frontend/styles
 /frontend/css
 /frontend/images

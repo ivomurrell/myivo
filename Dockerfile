@@ -6,6 +6,11 @@ COPY frontend/package*.json .
 RUN npm install
 
 COPY frontend .
+
+# tailwind classes are in the backend's HTML template files
+COPY server/templates templates
+RUN sed -i "s|../../../server/templates|../../templates|" src/css/tailwind.css
+
 RUN npm run build:production
 
 FROM rust:1.85 AS builder-rs
@@ -26,8 +31,6 @@ RUN apt-get update \
 
 WORKDIR /root
 
-COPY --from=build-js /usr/src/myivo/images ./images 
-COPY --from=build-js /usr/src/myivo/fonts ./fonts
 COPY --from=build-js /usr/src/myivo/build ./build
 COPY --from=builder-rs /usr/local/cargo/bin/myivo-server /usr/local/bin/
 

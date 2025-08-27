@@ -1,5 +1,1 @@
-@import "modern-normalize";
-@import "defaults";
-@import "header";
-@import "projects";
-@import "scrobblar";
+@import "tailwind-out";

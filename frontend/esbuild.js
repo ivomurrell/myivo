@@ -3,6 +3,8 @@ import browserslist from "browserslist";
 import esbuild from "esbuild";
 import { esbuildPluginBrowserslist } from "esbuild-plugin-browserslist";
 import minimist from "minimist";
+
+import child_process from "node:child_process";
 import http from "node:http";
 
 const argv = minimist(process.argv.slice(2));
@@ -18,18 +20,22 @@ const baseOptions = {
   ],
 };
 
+const tailwindBin = "node_modules/.bin/tailwindcss";
+const tailwindArgs = [
+  "-i",
+  "src/css/tailwind.css",
+  "-o",
+  "src/css/tailwind-out.css",
+];
+
 const devOptions = {
   ...baseOptions,
   sourcemap: true,
   outfile: "build/app.js",
 };
-if (argv.prod) {
-  await esbuild.build({
-    ...baseOptions,
-    minify: true,
-    outfile: "build/app.min.js",
-  });
-} else if (argv.serve) {
+if (argv.serve) {
+  child_process.fork(tailwindBin, [...tailwindArgs, "-w"]);
+
   const context = await esbuild.context(devOptions);
   const { host, port } = await context.serve({ servedir: "." });
 
@@ -62,5 +68,16 @@ if (argv.prod) {
     })
     .listen(proxyPort);
 } else {
-  await esbuild.build(devOptions);
+  const tailwindChild = child_process.fork(tailwindBin, tailwindArgs);
+  await new Promise((resolve) => tailwindChild.on("exit", resolve));
+
+  if (argv.prod) {
+    await esbuild.build({
+      ...baseOptions,
+      minify: true,
+      outfile: "build/app.min.js",
+    });
+  } else {
+    await esbuild.build(devOptions);
+  }
 }
