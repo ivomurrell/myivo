@@ -60,7 +60,7 @@ if (argv.prod) {
       });
       req.pipe(proxyReq, { end: true });
     })
-    .listen(3000);
+    .listen(proxyPort);
 } else {
   await esbuild.build(devOptions);
 }
