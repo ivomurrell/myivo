@@ -20,7 +20,7 @@ const baseOptions = {
   ],
 };
 
-const tailwindBin = "node_modules/.bin/tailwindcss";
+const tailwindBin = "../node_modules/.bin/tailwindcss";
 const tailwindArgs = [
   "-i",
   "src/css/tailwind.css",
