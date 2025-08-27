@@ -19,11 +19,10 @@
     "typescript-eslint": "^8.41.0"
   },
   "scripts": {
-    "check": "tsc",
-    "build": "npm run check && node esbuild.js",
-    "build:production": "npm run check && node esbuild.js --prod",
+    "build": "node esbuild.js",
+    "build:production": "node esbuild.js --prod",
     "start": "node esbuild.js --serve",
-    "lint": "eslint",
+    "lint": "eslint && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ivo Murrell",
