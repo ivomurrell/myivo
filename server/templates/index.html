@@ -17,6 +17,15 @@
           >.computer
         </h1>
       </div>
+      <div class="flex justify-center">
+        {% if let Some(game) = game -%}
+        <img
+          class="p-3"
+          src="{{ game.image }}"
+          alt="Cover art for {{ game.name }}"
+        />
+        {%- endif %}
+      </div>
     </div>
   </body>
 </html>

@@ -1,4 +1,5 @@
 mod index;
+mod scrapers;
 
 use std::net::SocketAddr;
 
@@ -43,7 +44,7 @@ async fn main() -> anyhow::Result<()> {
 }
 
 async fn render_index_handler() -> impl IntoResponse {
-    let template = RootTemplate::new();
+    let template = RootTemplate::new().await;
     template.render().map(Html).map_err(|err| {
         tracing::error!("failed to render index: {err:?}");
         StatusCode::INTERNAL_SERVER_ERROR
