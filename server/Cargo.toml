@@ -9,6 +9,7 @@ edition = "2024"
 anyhow = "1.0.57"
 askama = "0.14.0"
 axum = "0.8.1"
+cached = { version = "0.56.0", features = ["async"] }
 reqwest = "0.12.23"
 scraper = "0.24.0"
 tokio = { version = "1.18.2", features = ["full"] }

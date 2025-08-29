@@ -1,6 +1,7 @@
-use std::sync::LazyLock;
+use std::{sync::LazyLock, time::Duration};
 
 use anyhow::Context;
+use cached::proc_macro::once;
 use scraper::{Html, Selector};
 
 #[derive(Debug, Clone)]
@@ -48,4 +49,12 @@ impl Backloggd {
 
         Ok(Self { name, image })
     }
+}
+
+#[once(time = 300, option = false)]
+pub async fn cached_fetch() -> Option<Backloggd> {
+    Backloggd::fetch()
+        .await
+        .map_err(|error| tracing::warn!(?error, "failed to scrape Backloggd"))
+        .ok()
 }

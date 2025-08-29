@@ -1,4 +1,4 @@
-use crate::scrapers::backloggd::Backloggd;
+use crate::scrapers::backloggd::{self, Backloggd};
 
 use askama::Template;
 
@@ -11,10 +11,7 @@ pub struct RootTemplate {
 impl RootTemplate {
     pub async fn new() -> RootTemplate {
         RootTemplate {
-            game: Backloggd::fetch()
-                .await
-                .map_err(|error| tracing::warn!(%error, "failed to scrape Backloggd"))
-                .ok(),
+            game: backloggd::cached_fetch().await,
         }
     }
 }
