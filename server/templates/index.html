@@ -24,6 +24,12 @@
           src="{{ game.image }}"
           alt="Cover art for {{ game.name }}"
         />
+        {%- endif %} {% if let Some(movie) = movie -%}
+        <img
+          class="p-3"
+          src="{{ movie.poster }}"
+          alt="Poster for {{ movie.name }}"
+        />
         {%- endif %}
       </div>
     </div>

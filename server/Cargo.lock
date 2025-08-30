@@ -1149,6 +1149,7 @@ dependencies = [
  "cached",
  "reqwest",
  "scraper",
+ "serde",
  "tokio",
  "tower",
  "tower-http",
