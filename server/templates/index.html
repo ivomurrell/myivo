@@ -30,7 +30,14 @@
           src="{{ movie.poster }}"
           alt="Poster for {{ movie.name }}"
         />
+        {%- endif %} {% if let Some(song) = song -%}
+        <img
+          class="p-3"
+          src="{{ song.art }}"
+          alt="Album art for {{ song.name }}"
+        />
         {%- endif %}
+
       </div>
     </div>
   </body>

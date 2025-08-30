@@ -1,3 +1,5 @@
+set dotenv-load := true
+
 [parallel]
 serve: serve-js serve-rs
 
