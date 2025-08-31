@@ -1,4 +1,4 @@
-use std::{env, time::Duration};
+use std::{env, fs, time::Duration};
 
 use anyhow::Context;
 use cached::proc_macro::once;
@@ -65,10 +65,9 @@ impl AppleMusicClient {
             env::var("APPLE_DEVELOPER_TOKEN_KEY_ID").context("missing apple developer key ID")?;
         let team_id =
             env::var("APPLE_DEVELOPER_TOKEN_TEAM_ID").context("missing apple developer team ID")?;
-        let auth_key = env::var("APPLE_DEVELOPER_TOKEN_AUTH_KEY")
-            .context("missing apple developer auth key")?;
-        let key = EncodingKey::from_ec_pem(auth_key.as_bytes())
-            .context("failed to parse appple developer auth key")?;
+        let auth_key = fs::read("keys/AuthKey.p8").context("missing apple developer auth key")?;
+        let key = EncodingKey::from_ec_pem(&auth_key)
+            .context("failed to parse apple developer auth key")?;
         let user_token = env::var("APPLE_USER_TOKEN").context("missing apple user token")?;
 
         Ok(Self {

@@ -1,5 +1,6 @@
 node_modules
 .env
+keys/
 /frontend/fonts
 /frontend/build
 /frontend/src/css/tailwind-out.css

@@ -9,6 +9,10 @@ processes = []
 [env]
   RUST_LOG = "debug"
 
+[[files]]
+  guest_path = "/root/keys/AuthKey.p8"
+  secret_name = "APPLE_DEVELOPER_TOKEN_AUTH_KEY"
+
 [experimental]
   allowed_public_ports = []
   auto_rollback = true
