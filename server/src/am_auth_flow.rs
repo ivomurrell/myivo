@@ -1,6 +1,6 @@
 use askama::Template;
 
-use crate::scrapers::apple_music;
+use crate::scrapers::apple_music::AppleMusicClient;
 
 #[derive(Template, Debug, Clone)]
 #[template(path = "am-auth-flow.html")]
@@ -9,8 +9,8 @@ pub struct AuthFlowTemplate {
 }
 
 impl AuthFlowTemplate {
-    pub fn new() -> anyhow::Result<Self> {
-        let token = apple_music::build_developer_token()?;
+    pub fn new(apple_music_client: &AppleMusicClient) -> anyhow::Result<Self> {
+        let token = apple_music_client.build_developer_token()?;
         Ok(Self { token })
     }
 }

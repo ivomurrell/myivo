@@ -51,16 +51,43 @@ struct AppleMusicTrackArtwork {
     url: String,
 }
 
-impl AppleMusic {
-    pub async fn fetch() -> anyhow::Result<Self> {
-        let jwt = build_developer_token()?;
+pub struct AppleMusicClient {
+    http_client: Client,
+    key_id: String,
+    team_id: String,
+    key: EncodingKey,
+    user_token: String,
+}
+
+impl AppleMusicClient {
+    pub fn new() -> anyhow::Result<Self> {
+        let key_id =
+            env::var("APPLE_DEVELOPER_TOKEN_KEY_ID").context("missing apple developer key ID")?;
+        let team_id =
+            env::var("APPLE_DEVELOPER_TOKEN_TEAM_ID").context("missing apple developer team ID")?;
+        let auth_key = env::var("APPLE_DEVELOPER_TOKEN_AUTH_KEY")
+            .context("missing apple developer auth key")?;
+        let key = EncodingKey::from_ec_pem(auth_key.as_bytes())
+            .context("failed to parse appple developer auth key")?;
         let user_token = env::var("APPLE_USER_TOKEN").context("missing apple user token")?;
 
-        let client = Client::new();
-        let response: AppleMusicResponse = client
+        Ok(Self {
+            http_client: Client::new(),
+            key_id,
+            team_id,
+            key,
+            user_token,
+        })
+    }
+
+    pub async fn fetch(&self) -> anyhow::Result<AppleMusic> {
+        let jwt = self.build_developer_token()?;
+
+        let response: AppleMusicResponse = self
+            .http_client
             .get("https://api.music.apple.com/v1/me/recent/played/tracks")
             .bearer_auth(jwt)
-            .header("Music-User-Token", user_token)
+            .header("Music-User-Token", self.user_token.clone())
             .query(&[("types", "songs"), ("limit", "1")])
             .send()
             .await
@@ -76,32 +103,26 @@ impl AppleMusic {
             .replace("{w}", dimensions)
             .replace("{h}", dimensions);
 
-        Ok(Self {
+        Ok(AppleMusic {
             name: track.attributes.name.clone(),
             art: artwork_url,
         })
     }
+
+    pub fn build_developer_token(&self) -> anyhow::Result<String> {
+        let mut header = Header::new(Algorithm::ES256);
+        header.kid = Some(self.key_id.clone());
+        let claims = Claims::new(self.team_id.clone());
+
+        jsonwebtoken::encode(&header, &claims, &self.key)
+            .context("failed to encode apple developer JWT")
+    }
 }
 
 #[once(time = 30, option = false)]
-pub async fn cached_fetch() -> Option<AppleMusic> {
-    AppleMusic::fetch()
+pub async fn cached_fetch(this: &AppleMusicClient) -> Option<AppleMusic> {
+    this.fetch()
         .await
         .map_err(|error| tracing::warn!(?error, "failed to call Apple Music"))
         .ok()
-}
-
-pub fn build_developer_token() -> anyhow::Result<String> {
-    let mut header = Header::new(Algorithm::ES256);
-    header.kid =
-        Some(env::var("APPLE_DEVELOPER_TOKEN_KEY_ID").context("missing apple developer key ID")?);
-    let team_id =
-        env::var("APPLE_DEVELOPER_TOKEN_TEAM_ID").context("missing apple developer team ID")?;
-    let claims = Claims::new(team_id);
-    let auth_key =
-        env::var("APPLE_DEVELOPER_TOKEN_AUTH_KEY").context("missing apple developer auth key")?;
-    let key = EncodingKey::from_ec_pem(auth_key.as_bytes())
-        .context("failed to parse appple developer auth key")?;
-
-    jsonwebtoken::encode(&header, &claims, &key).context("failed to encode apple developer JWT")
 }

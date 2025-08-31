@@ -3,15 +3,17 @@ mod am_auth_flow;
 mod index;
 mod scrapers;
 
-use std::net::SocketAddr;
+use std::{net::SocketAddr, sync::Arc};
 
 #[cfg(debug_assertions)]
 use crate::am_auth_flow::AuthFlowTemplate;
 use crate::index::RootTemplate;
+use crate::scrapers::apple_music::AppleMusicClient;
 
 use askama::Template;
 use axum::{
     Router,
+    extract::State,
     http::{HeaderName, HeaderValue, StatusCode},
     response::{Html, IntoResponse},
     routing::{get, get_service},
@@ -22,14 +24,23 @@ use tower_http::{
     trace::TraceLayer,
 };
 
+#[derive(Clone)]
+struct AppState {
+    apple_music_client: Arc<AppleMusicClient>,
+}
+
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     tracing_subscriber::fmt::init();
+
+    let apple_music_client = Arc::new(AppleMusicClient::new()?);
+    let state = AppState { apple_music_client };
 
     let app = Router::new()
         .route("/", get(render_index_handler))
         .route("/dev/am-auth-flow", get(render_apple_music_auth_flow))
         .fallback(get_service(ServeDir::new(".")))
+        .with_state(state)
         .layer(
             ServiceBuilder::new()
                 .layer(TraceLayer::new_for_http())
@@ -48,21 +59,21 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-async fn render_index_handler() -> impl IntoResponse {
-    let template = RootTemplate::new().await;
+async fn render_index_handler(State(state): State<AppState>) -> impl IntoResponse {
+    let template = RootTemplate::new(&state.apple_music_client).await;
     template.render().map(Html).map_err(|err| {
         tracing::error!("failed to render index: {err:?}");
         StatusCode::INTERNAL_SERVER_ERROR
     })
 }
 
-async fn render_apple_music_auth_flow() -> impl IntoResponse {
+async fn render_apple_music_auth_flow(State(state): State<AppState>) -> impl IntoResponse {
     #[cfg(not(debug_assertions))]
     return StatusCode::NOT_FOUND;
 
     #[cfg(debug_assertions)]
     {
-        let template = AuthFlowTemplate::new();
+        let template = AuthFlowTemplate::new(&state.apple_music_client);
         template
             .and_then(|template| Ok(template.render()?))
             .map(Html)
