@@ -5,7 +5,7 @@ serve: serve-js serve-rs
 
 [working-directory: 'frontend']
 serve-js:
-	npm start
+	watchexec --restart --watch esbuild.js npm start
 
 [working-directory: 'server']
 serve-rs $RUST_LOG=env('RUST_LOG', 'debug,selectors=warn,html5ever=warn'):

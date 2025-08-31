@@ -50,7 +50,7 @@ if (argv.serve) {
       };
       const url = new URL(`http://localhost${req.url}`);
       const route =
-        url.pathname === "/" || url.pathname === "/scrobbles"
+        url.pathname === "/" || url.pathname === "/dev/am-auth-flow"
           ? { hostname: "127.0.0.1", port: 8080 }
           : { hostname: hosts[0], port };
       const routedOptions = { ...options, ...route };
